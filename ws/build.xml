@@ -1,0 +1,48 @@
+<project name="Zen l'initie" default="compile" basedir="..">
+    <description>
+        Tasks file used for the project. Provides compile, run, test, build and clean targets.
+    </description>
+    <property name="src" location="src"/>
+    <property name="doc" location="docs"/>
+    <property name="build" location="builds"/>
+    <property name="classpath" location="class"/>
+    <property name="mainClass" value="Main"/>
+    
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${classpath}"/>
+        <mkdir dir="${doc}"/>
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="compile" depends="init"
+        description="Compile files into the class folder">
+        <javac srcdir="${src}" destdir="${classpath}"/>
+    </target>
+
+    <target name="run" depends="compile"
+        description="Run the file after the compile target">
+        <java classname="${mainClass}" fork="true"/>
+    </target>
+
+    <!-- <target name="test" depends="compile" -->
+
+    <target name="build" depends="compile"
+        description="Create the jar file">
+        <javadoc destdir="${doc}" sourcepath="${src}" charset="UTF8" author="true"/>
+        <jar destfile="${build}/${TSTAMP}-build.jar" basedir="${classpath}">
+            <manifest>
+                <attribute name="Main-Class" value="${mainClass}"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="clean"
+        description="Purge the project directory (excepts the sources and the workspace)">
+        <delete includeemptydirs="true">
+            <fileset dir="${classpath}" excludes="**/*.jar"/>
+        </delete>
+        <delete dir="${doc}"/>
+        <delete dir="${build}"/>
+    </target>
+</project>
