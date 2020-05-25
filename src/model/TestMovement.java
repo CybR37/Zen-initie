@@ -49,7 +49,7 @@ public class TestMovement {
     }
 
     @Test
-    public void testIsValidWithTwoPawns(){
+    public void testIsValidWithTwoPawnsNotValids(){
         assertFalse(this.mvt.isValid());
     }
 

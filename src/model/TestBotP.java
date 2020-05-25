@@ -43,30 +43,30 @@ public class TestBotP {
     }
 
     @Test
-    void testIsAllConnectedOnePawn(){
+    public void testIsAllConnectedOnePawn(){
         assertTrue(this.bot.isAllConnected());
     }
 
     @Test
-    void testIsAllConnectedNoPawn(){
+    public void testIsAllConnectedNoPawn(){
         this.myPawn.remove(0);
         assertTrue(this.bot.isAllConnected());
     }
 
     @Test
-    void testIsAllConnectedTwoPawnValid(){
+    public void testIsAllConnectedTwoPawnValid(){
         this.myPawn.add(new Pawn(1, 0, PawnType.WHITE));
         assertTrue(this.bot.isAllConnected());
     }
 
     @Test
-    void testIsAllConnectedTwoPawnNoValid(){
+    public void testIsAllConnectedTwoPawnNoValid(){
         this.myPawn.add(new Pawn(2, 0, PawnType.WHITE));
         assertFalse(this.bot.isAllConnected());
     }
 
     @Test
-    void testRemoveOutPawnsOnePawn(){
+    public void testRemoveOutPawnsOnePawn(){
         this.myPawn.get(0).setState(true);
         assertEquals(1, this.bot.myPawns.size());
         this.bot.removeOutPawns();
@@ -74,7 +74,7 @@ public class TestBotP {
     }
 
     @Test
-    void testRemoveOutPawnsTwoPawnsRemoveOne(){
+    public void testRemoveOutPawnsTwoPawnsRemoveOne(){
         this.myPawn.get(0).setState(true);
         this.myPawn.add(new Pawn(0, 0, PawnType.WHITE));
         assertEquals(2, this.bot.myPawns.size());
@@ -83,9 +83,9 @@ public class TestBotP {
     }
 
     @Test
-    void testRemoveOutPawnsTwoPawnsRemoveTwo(){
+    public void testRemoveOutPawnsTwoPawnsRemoveTwo(){
         this.myPawn.add(new Pawn(0, 0, PawnType.WHITE));
-        this.myPawn.get(0).setState(true);     
+        this.myPawn.get(0).setState(true);
         this.myPawn.get(1).setState(true);
         assertEquals(2, this.bot.myPawns.size());
         this.bot.removeOutPawns();
@@ -93,7 +93,7 @@ public class TestBotP {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    void testRemoveOutPawnsNoPawn(){
+    public void testRemoveOutPawnsNoPawn(){
         this.myPawn.get(0).setState(true);
         assertEquals(1, this.bot.myPawns.size());
         this.bot.removeOutPawns();

@@ -14,7 +14,7 @@ public class TestPawn {
     @Test
     public void testConstructorWithValidCoordinates(){
         Pawn p = new Pawn(5, 9, PawnType.ZEN);
-        assertEquals(this.pawn, p.getClass());
+        assertEquals(this.pawn.getClass(), p.getClass());
         assertEquals(5, p.getX());
         assertEquals(9, p.getY());
         assertEquals(PawnType.ZEN, p.getType());
@@ -24,7 +24,7 @@ public class TestPawn {
     @Test
     public void testConstructorWithInvalidCoordinates(){
         Pawn p = new Pawn(-3, 4, PawnType.ZEN);
-        assertEquals(this.pawn, p.getClass());
+        assertEquals(this.pawn.getClass(), p.getClass());
         assertEquals(0, p.getX());
         assertEquals(0, p.getY());
         assertNull(p.getType());
