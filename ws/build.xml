@@ -28,7 +28,7 @@
 
     <target name="compile" depends="init"
         description="Compile files into the class folder">
-        <javac srcdir="${src}" destdir="${classpath}"/>
+        <javac srcdir="${src}" excludes="**/Test*.java" destdir="${classpath}"/>
     </target>
 
     <target name="run" depends="compile"
