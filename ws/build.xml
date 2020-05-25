@@ -62,7 +62,7 @@
         <javadoc destdir="${doc}" charset="UTF8" access="private" author="true">
             <fileset dir="${src}" excludes="**/Test*.java"/>
         </javadoc>
-        <jar destfile="${build}/${TSTAMP}-build.jar" basedir="${classpath}" excludes="**/*.jar">
+        <jar destfile="${build}/${TSTAMP}-build.jar" basedir="${classpath}" excludes="**/*.xml">
             <manifest>
             <!-- Specifies where the entry class is located -->
                 <attribute name="Main-Class" value="${mainClass}"/>
