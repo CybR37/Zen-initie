@@ -74,7 +74,7 @@
         description="Purge the project directory (excepts the sources and the workspace)">
         <delete includeemptydirs="true">
         <!-- Removes only class files -->
-            <fileset dir="${classpath}" excludes="**/*.jar"/>
+            <fileset dir="${classpath}"/>
         </delete>
         <delete dir="${doc}"/>
         <delete dir="${build}"/>
