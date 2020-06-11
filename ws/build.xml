@@ -8,12 +8,13 @@
     <property name="doc" location="docs"/>
     <property name="build" location="builds"/>
     <property name="classpath" location="class"/>
+    <property name="lib" location="lib"/>
     <!-- The main class used for the manifest file -->
     <property name="mainClass" value="Launch"/>
 
     <path id="classpath.test">
-        <pathelement location="lib/junit-4.13.jar"/>
-        <pathelement location="lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="${lib}/junit-4.13.jar"/>
+        <pathelement location="${lib}/hamcrest-core-1.3.jar"/>
         <pathelement location="${classpath}"/>
     </path>
     
@@ -59,6 +60,8 @@
     <target name="build" depends="compile"
         description="Create the jar file">
     <!-- Generate javadoc for the project -->
+        <delete dir="${doc}"/>
+        <mkdir dir="${doc}"/>
         <javadoc destdir="${doc}" charset="UTF8" access="private" author="true">
             <fileset dir="${src}" excludes="**/Test*.java"/>
         </javadoc>
@@ -72,10 +75,7 @@
     
     <target name="clear"
         description="Purge the project directory (excepts the sources and the workspace)">
-        <delete includeemptydirs="true">
-        <!-- Removes only class files -->
-            <fileset dir="${classpath}"/>
-        </delete>
+        <delete dir="${classpath}"/>
         <delete dir="${doc}"/>
         <delete dir="${build}"/>
     </target>
