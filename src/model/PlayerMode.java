@@ -6,6 +6,5 @@ package model;
  */
 public enum PlayerMode {
 	HVH,
-	HVB,
-	BVB
+	HVB
 }

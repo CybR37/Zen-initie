@@ -2,6 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
+import java.io.File;
+
 /**
  * Game class, the core of a game
  * @author Théo Koenigs
@@ -43,7 +47,21 @@ public class Game implements java.io.Serializable {
 	 * @param height number of rows (grid height)
 	 */
 	public Game(UIMode ui, PlayerMode mode, int width, int height) {
-		// TODO - implement Game.Game
+		if(ui != null && mode != null && width == 11 && height == 11){
+			this.ui = ui;
+			this.mode = mode;
+			this.width = width;
+			this.height = height;
+
+			this.whitePawn = new ArrayList<Pawn>();
+			this.blackPawn = new ArrayList<Pawn>();
+			this.zenPawn = new Pawn(0, 0, PawnType.ZEN);
+				
+			this.initializeGrid();
+			this.pawnPlacement();
+		} else{
+			System.err.println("Erreur Game(): parametre non valide");
+		}
 	}
 
 	/**
@@ -74,20 +92,47 @@ public class Game implements java.io.Serializable {
 	 * @param fileName file name
 	 */
 	public void saveState(String fileName) {
-		// TODO - implement Game.saveState
+		File folder = new File(ZenInitie.SAVE_PATH);
+		if(!folder.exists() || !folder.isDirectory()){
+			if(!folder.mkdirs()){
+				System.err.println("Erreur Game.saveState(): echec de la creation du dossier "+ZenInitie.SAVE_PATH);
+			}
+		}
+		try{
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(fileName)));
+			out.writeObject(this);
+			out.close();
+		} catch(java.io.FileNotFoundException e){
+			System.err.println("Erreur Game.savestate(): pas de partie sauvegardee");
+		} catch(java.io.IOException e){
+			System.err.println("Erreur Game.savestate(): erreur dans la gestion du fichier");
+		}
 	}
 
 	/**
-	 * Places the pawns according to the model
+	 * Creates and places the pawns according to the model
 	 */
 	private void pawnPlacement() {
-		// TODO - implement Game.pawnPlacement
+		for(int i=0; i < this.grid.length; i++){
+			for(int j=0; j < this.grid[i].length; j++){
+				Square sq = this.grid[i][j];
+				if(sq != null){
+					if(sq.getType() == SymbolSquare.CHINESE){
+						this.whitePawn.add(new Pawn(i, j, PawnType.BLACK));
+					} else if(sq.getType() == SymbolSquare.GEOMETRIC){
+						this.blackPawn.add(new Pawn(i, j, PawnType.WHITE));
+					}
+				} else{
+					System.err.println("Erreur Game.pawnPlacement(): la grille n'est pas initialisee");
+				}
+			}
+		}
 	}
 
 	/**
 	 * Go to the next round, calls {@link #isWin()}, if true ends the game
 	 */
-	public void nextMove() {
+	private void nextMove() {
 		// TODO - implement Game.nextMove
 	}
 
@@ -96,14 +141,31 @@ public class Game implements java.io.Serializable {
 	 * @param ui new interface mode
 	 */
 	public void setUI(UIMode ui) {
-		// TODO - implement Game.setUI
+		if(ui != null){
+			this.ui = ui;
+		} else{
+			System.err.println("Erreur Game.setUI(): parametre non valide");
+		}
 	}
 
 	/**
 	 * Creates the game grid
 	 */
 	private void initializeGrid() {
-		// TODO - implement Game.initializeGrid
+		this.grid = new Square[this.width][this.height];
+		for(int i=0; i < this.grid.length; i++){
+			for(int j=0; j < this.grid[i].length; j++){
+				//Positions for black pawns
+				if(((i == 0 || i == 5) && j == 0) || ((i == 3 || i == 7) && (j == 2 || j == 8)) || ((i == 1 || i == 9)  && (j == 4 || j == 6)) || ((i == 5 || i == 10)  && j == 10)){
+					this.grid[i][j] = new Square(SymbolSquare.CHINESE);
+				//Positions for white pawns
+				} else if(((j == 10 || j == 5) && i == 0) || ((j == 3 || j == 7) && (i == 2 || i == 8)) || ((j == 1 || j == 9)  && (i == 4 || i == 6)) || ((j == 0 || j == 5)  && i == 10)){
+					this.grid[i][j] = new Square(SymbolSquare.GEOMETRIC);
+				} else{
+					this.grid[i][j] = new Square(SymbolSquare.NONE);
+				}
+			}
+		}
 	}
 
 	/**

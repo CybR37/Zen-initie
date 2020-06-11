@@ -35,7 +35,8 @@ public class HumanP extends Player {
 	/**
 	 * Reads coordinates from the player's input
 	 */
-	private void readCoords() {
+	private int[] readCoords() {
+		return null;
 		// TODO - implement HumanP.readCoords
 	}
 }

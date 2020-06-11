@@ -9,6 +9,6 @@ public class Launch {
 	 * @param args no args used
 	 */
 	public static void main(String[] args) {
-		// TODO - implement Launch.main
+		new model.ZenInitie();
 	}
 }

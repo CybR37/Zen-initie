@@ -18,7 +18,11 @@ public class Square implements java.io.Serializable {
 	 * @param type square type
 	 */
 	public Square(SymbolSquare type) {
-		// TODO - implement Square.Square
+		if(type != null){
+			this.type = type;
+		} else{
+			System.err.println("Erreur Square(): parametre non valide");
+		}
 	}
 
 	/**
