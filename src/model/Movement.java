@@ -39,7 +39,20 @@ public class Movement implements java.io.Serializable {
 	 * @param height number of rows (grid height)
 	 */
 	public Movement(Pawn pawn, int newX, int newY, ArrayList<Pawn> pawnList, int width, int height) {
-		// TODO - implement Movement.Movement
+		if(pawn != null && pawnList != null && width == 11 && height == 11){
+			this.pawn = pawn;
+			this.pawnList = pawnList;
+			this.oX = this.pawn.getX();
+			this.oY = this.pawn.getY();
+			this.nX = newX;
+			this.nY = newY;
+			this.width = width;
+			this.height = height;
+			
+			// TODO - attribute dir
+		} else{
+			System.err.println("Erreur Movement(): parametre non valide");
+		}
 	}
 
 	/**

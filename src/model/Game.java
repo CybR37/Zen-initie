@@ -22,9 +22,9 @@ public class Game implements java.io.Serializable {
 	private Pawn zenPawn;
 	/** Current player instance */
 	private Player current;
-	/** Player 1 instance */
+	/** Instance of player 1 (white pawn player) */
 	private Player player1;
-	/** Player 2 instance */
+	/** Instance of player 2 (black pawn player) */
 	private Player player2;
 	/** Game grid */
 	private Square[][] grid;
@@ -55,10 +55,27 @@ public class Game implements java.io.Serializable {
 
 			this.whitePawn = new ArrayList<Pawn>();
 			this.blackPawn = new ArrayList<Pawn>();
-			this.zenPawn = new Pawn(0, 0, PawnType.ZEN);
+			this.zenPawn = new Pawn(this.width/2, this.height/2, PawnType.ZEN);
 				
 			this.initializeGrid();
 			this.pawnPlacement();
+
+			ArrayList<Pawn> pawnList = new ArrayList<Pawn>();
+			pawnList.addAll(this.whitePawn);
+			pawnList.addAll(this.blackPawn);
+			pawnList.add(this.zenPawn);
+			this.player1 = new HumanP(this.ui, "1", this.whitePawn, pawnList, this.width, this.height);
+			if(this.mode == PlayerMode.HVH){
+				this.player2 = new HumanP(this.ui, "2", this.blackPawn, pawnList, this.width, this.height);
+			} else{
+				this.player2 = new BotP(this.ui, "2", this.blackPawn, pawnList, this.width, this.height);
+			}
+
+			if(Math.random() < 0.5){
+				this.current = this.player1;
+			} else{
+				this.current = this.player2;
+			}
 		} else{
 			System.err.println("Erreur Game(): parametre non valide");
 		}
@@ -119,8 +136,10 @@ public class Game implements java.io.Serializable {
 				if(sq != null){
 					if(sq.getType() == SymbolSquare.CHINESE){
 						this.whitePawn.add(new Pawn(i, j, PawnType.BLACK));
+						sq.setFree(false);
 					} else if(sq.getType() == SymbolSquare.GEOMETRIC){
 						this.blackPawn.add(new Pawn(i, j, PawnType.WHITE));
+						sq.setFree(false);
 					}
 				} else{
 					System.err.println("Erreur Game.pawnPlacement(): la grille n'est pas initialisee");
@@ -143,6 +162,8 @@ public class Game implements java.io.Serializable {
 	public void setUI(UIMode ui) {
 		if(ui != null){
 			this.ui = ui;
+			this.player1.setUI(this.ui);
+			this.player2.setUI(this.ui);
 		} else{
 			System.err.println("Erreur Game.setUI(): parametre non valide");
 		}
@@ -173,5 +194,29 @@ public class Game implements java.io.Serializable {
 	 */
 	public void showGrid() {
 		// TODO - implement Game.showGrid
+	}
+
+	/**
+	 * Removes pawns captured by the opponent
+	 */
+	public void removeOutPawns(){
+		java.util.Iterator<Pawn> it = this.current.pawnList.iterator();
+		Pawn p;
+		boolean found = false;
+		while(it.hasNext() && !found){
+			p = it.next();
+			if(p.isOut()){
+				it.remove();
+				if(p.getType() == PawnType.BLACK){
+					this.blackPawn.remove(p);
+				} else if(p.getType() == PawnType.WHITE){
+					this.whitePawn.remove(p);
+				}
+			}
+		}
+	}
+
+	public Player getCurrent(){
+		return this.current;
 	}
 }

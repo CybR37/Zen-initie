@@ -18,7 +18,7 @@ public class TestHumanP {
 
         this.myPawn.add(new Pawn(0, 0, PawnType.WHITE));
         this.allPawn.add(new Pawn(0, 0, PawnType.WHITE));
-        this.human = new HumanP(UIMode.TEXT, this.myPawn, this.allPawn, 11, 11);
+        this.human = new HumanP(UIMode.TEXT, "test", this.myPawn, this.allPawn, 11, 11);
     }
 
     @Test
@@ -63,40 +63,5 @@ public class TestHumanP {
     public void testIsAllConnectedTwoPawnNoValid(){
         this.myPawn.add(new Pawn(2, 0, PawnType.WHITE));
         assertFalse(this.human.isAllConnected());
-    }
-
-    @Test
-    public void testRemoveOutPawnsOnePawn(){
-        this.myPawn.get(0).setState(true);
-        assertEquals(1, this.human.myPawns.size());
-        this.human.removeOutPawns();
-        assertEquals(0, this.human.myPawns.size());
-    }
-
-    @Test
-    public void testRemoveOutPawnsTwoPawnsRemoveOne(){
-        this.myPawn.get(0).setState(true);
-        this.myPawn.add(new Pawn(0, 0, PawnType.WHITE));
-        assertEquals(2, this.human.myPawns.size());
-        this.human.removeOutPawns();
-        assertEquals(1, this.human.myPawns.size());
-    }
-
-    @Test
-    public void testRemoveOutPawnsTwoPawnsRemoveTwo(){
-        this.myPawn.add(new Pawn(0, 0, PawnType.WHITE));
-        this.myPawn.get(0).setState(true);
-        this.myPawn.get(1).setState(true);
-        assertEquals(2, this.human.myPawns.size());
-        this.human.removeOutPawns();
-        assertEquals(0, this.human.myPawns.size());
-    }
-
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testRemoveOutPawnsNoPawn(){
-        this.myPawn.get(0).setState(true);
-        assertEquals(1, this.human.myPawns.size());
-        this.human.removeOutPawns();
-        assertEquals(0, this.human.myPawns.size());
     }
 }

@@ -24,7 +24,12 @@ public class Pawn implements java.io.Serializable {
 	 * @param color pawn type 
 	 */
 	public Pawn(int x, int y, PawnType color) {
-		// TODO - implement Pawn.Pawn
+		if(x >= 0 && y >= 0 && color != null){
+			this.x = x;
+			this.y = y;
+			this.type = color;
+			this.out = false;
+		}
 	}
 
 	/**
@@ -33,9 +38,8 @@ public class Pawn implements java.io.Serializable {
 	 * @param y y coordinates
 	 * @return true if the pawn is at the x and y coordinates of the parameters, otherwise false
 	 */
-	public boolean isAt(int x, int y) {
-		// TODO - implement Pawn.isAt
-		return false;
+	public boolean isAt(int x, int y) {			
+		return (this.x == x && this.y == y);
 	}
 
 	/**
