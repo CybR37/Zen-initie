@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class ZenInitie {
 
 	/** Path of saved games */
-	static final String SAVE_PATH = "../saves";
+	static final String SAVE_PATH = "../saves/";
 	/** Game instance */
 	private Game currentGame;
 	/** The interface mode used */
@@ -49,6 +49,7 @@ public class ZenInitie {
 	/**
 	 * Prints the menu interface
 	 */
+	@SuppressWarnings("resource") // I remove the resource leak warning because it's intentional to leave the System.in scanner open
 	public void showMenu() {
 		if(ui == UIMode.TEXT){
 			boolean end = false;
@@ -70,7 +71,7 @@ public class ZenInitie {
 				if(rep.equals("1")){
 					this.showGameSettings();
 				} else if(rep.equals("2")){
-					this.loadGame(SAVE_PATH);
+					this.loadGame(SAVE_PATH + "saveFile.zenSave");
 				} else if(rep.equals("3")){
 					this.showRules();
 				} else if(rep.equals("4")){
@@ -86,6 +87,7 @@ public class ZenInitie {
 	/**
 	 * Prints the game settings interface
 	 */
+	@SuppressWarnings("resource") // I remove the resource leak warning because it's intentional to leave the System.in scanner open
 	public void showGameSettings() {
 		boolean validInput = false;
 		do{
@@ -114,9 +116,11 @@ public class ZenInitie {
 	 */
 	public void showRules() {
 		// TODO - implement ZenInitie.showRules
+		System.out.println("------------------------------------------------");
 		System.out.println("Regles du jeu: ");
 		System.out.println();
 		System.out.println("");
+		System.out.println();
 	}
 
 	/**

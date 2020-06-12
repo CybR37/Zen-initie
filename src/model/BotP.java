@@ -14,13 +14,14 @@ public class BotP extends Player {
 	/**
 	 * Class constructor, calls the constructor of the superclass to initialize the attributes
 	 * @param ui the interface mode used
+	 * @param name player name
 	 * @param playerPawn the player's pawns
 	 * @param pawnList list of game pawns
 	 * @param width number of columns (grid width)
 	 * @param height number of rows (grid height)
 	 */
-	public BotP(UIMode ui, ArrayList<Pawn> playerPawn, ArrayList<Pawn> pawnList, int width, int height) {
-		super(ui, playerPawn, pawnList, width, height);
+	public BotP(UIMode ui, String name, ArrayList<Pawn> playerPawn, ArrayList<Pawn> pawnList, int width, int height) {
+		super(ui, name, playerPawn, pawnList, width, height);
 	}
 
 	/**

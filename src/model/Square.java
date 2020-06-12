@@ -20,6 +20,7 @@ public class Square implements java.io.Serializable {
 	public Square(SymbolSquare type) {
 		if(type != null){
 			this.type = type;
+			this.free = true;
 		} else{
 			System.err.println("Erreur Square(): parametre non valide");
 		}

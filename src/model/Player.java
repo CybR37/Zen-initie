@@ -10,6 +10,8 @@ public abstract class Player implements java.io.Serializable {
 
 	/** The version for serialization and deserialization */
 	private static final long serialVersionUID = 1;
+	/** Player name */
+	protected String name;
 	/** The player's pawns */
 	protected ArrayList<Pawn> myPawns;
 	/** List of game pawns */
@@ -24,27 +26,34 @@ public abstract class Player implements java.io.Serializable {
 	/**
 	 * Class constructor, initializes attributes with subclass constructors
 	 * @param ui the interface mode used
+	 * @param name player name
 	 * @param playerPawn the player's pawns
 	 * @param pawnList list of game pawns
 	 * @param width number of columns (grid width)
 	 * @param height number of rows (grid height)
 	 */
-	public Player(UIMode ui, ArrayList<Pawn> playerPawn, ArrayList<Pawn> pawnList, int width, int height) {
-		// TODO - implement Player.Player
+	public Player(UIMode ui, String name, ArrayList<Pawn> playerPawn, ArrayList<Pawn> pawnList, int width, int height) {
+		if(ui != null && playerPawn != null && pawnList != null && width == 11 && height == 11){
+			this.ui = ui;
+			this.myPawns = playerPawn;
+			this.pawnList = pawnList;
+			this.width = width;
+			this.height = height;
+		} else{
+			System.err.println("Erreur Player(): parametre non valide");
+		}
 	}
-
-	/**
-	 * Allows the player to make a move
-	 * @return the move made
-	 */
-	public abstract Movement newMove();
 
 	/**
 	 * Changes the interface mode used
 	 * @param ui new interface mode
 	 */
 	public void setUI(UIMode ui) {
-		// TODO - implement Player.setUI
+		if(ui != null){
+			this.ui = ui;
+		} else{
+			System.err.println("Erreur Player.setUI(): parametre non valide");
+		}
 	}
 
 	/**
@@ -56,10 +65,8 @@ public abstract class Player implements java.io.Serializable {
 		return false;
 	}
 
-	/**
-	 * Removes pawns captured by the opponent
-	 */
-	public void removeOutPawns(){
-		// TODO - implement Player.removeOutPawns
+	private int nearbyPawns(int x, int y){
+		// TODO - implement Player.nearbyPawns
+		return 0;
 	}
 }
