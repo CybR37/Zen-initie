@@ -67,7 +67,7 @@ public class TestPawn {
     @Test
     public void testSetYWrongCoords(){
         this.pawn.setY(-3);
-        assertEquals(0, this.pawn.getY());
+        assertEquals(4, this.pawn.getY());
     }
 
     @Test

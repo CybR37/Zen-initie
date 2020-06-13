@@ -61,12 +61,170 @@ public abstract class Player implements java.io.Serializable {
 	 * @return true if all of the player's pawns are connected, otherwise false
 	 */
 	public boolean isAllConnected(){
-		// TODO - implement Player.isAllConnected
-		return false;
+		ArrayList<Pawn> list = new ArrayList<Pawn>(this.myPawns);
+		if(list.size() != 0){
+			Pawn zenPawn = this.pawnList.get(this.pawnList.size()-1);
+			if(zenPawn.getType() == PawnType.ZEN){
+				list.add(zenPawn);
+			}
+
+			int i = 0;
+			boolean found;
+			ArrayList<Pawn> connectedList;
+			// Getting the first pawn to check
+			int count0Connections = 0;
+			Pawn pawnChecked;
+			do{
+				i = 0;
+				found = false;
+				do{
+					pawnChecked = list.get(i);
+					connectedList = this.nearbyPawns(pawnChecked.getX(), pawnChecked.getY(), list);
+					if(connectedList.size() == 1){
+						found = true;
+					} else if(connectedList.size() == 0){
+						count0Connections++;
+					}
+					i++;
+				} while(!found && i < list.size());
+				// If all pawns have two or more connections, remove one pawn
+				if(!found && count0Connections == 0){
+					list.remove(pawnChecked);
+				}
+			} while(!found && count0Connections == 0);
+
+			boolean end;
+			int countMore1Connection;
+			do{
+				countMore1Connection = 0;
+				end = false;
+				while(!end){
+					connectedList = this.nearbyPawns(pawnChecked.getX(), pawnChecked.getY(), list);
+					list.remove(pawnChecked);
+					if(connectedList.size() == 0){
+						end = true;
+					} else{
+						if(connectedList.size() > 1){
+							countMore1Connection++; // Check for multiple branches
+						}
+						pawnChecked = connectedList.get(0);
+					}
+				}
+			} while(countMore1Connection != 0); // Stop checks when all branches have been checked
+		}
+		return (list.size() == 0);
 	}
 
-	private int nearbyPawns(int x, int y){
-		// TODO - implement Player.nearbyPawns
-		return 0;
+	/**
+	 * Search for pawns next to these coordinates
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param pawnList pawn checklist
+	 * @return connected pawns
+	 */
+	public ArrayList<Pawn> nearbyPawns(int x, int y, ArrayList<Pawn> pawnList){
+		ArrayList<Pawn> ret = null;
+		if(x >= 0 && x < this.width && y >= 0 && y < this.height && pawnList != null){
+			ret = new ArrayList<Pawn>();
+			boolean found = false;
+			int i = 0;
+			// Bottom left corner
+			if(x > 0 && y > 0){
+				while(i < pawnList.size() && !found){
+					if(pawnList.get(i).isAt(x-1, y-1)){
+						found = true;
+						ret.add(pawnList.get(i));
+					}
+					i++;
+				}
+			}
+			// Bottom side
+			if(y > 0){
+				found = false;
+				i = 0;
+				while(i < pawnList.size() && !found){
+					if(pawnList.get(i).isAt(x, y-1)){
+						found = true;
+						ret.add(pawnList.get(i));
+					}
+					i++;
+				}
+			}
+			// Bottom right corner
+			if(x < this.width-1 && y > 0){
+				found = false;
+				i = 0;
+				while(i < pawnList.size() && !found){
+					if(pawnList.get(i).isAt(x+1, y-1)){
+						found = true;
+						ret.add(pawnList.get(i));
+					}
+					i++;
+				}
+			}
+			// Left side
+			if(x > 0){
+				found = false;
+				i = 0;
+				while(i < pawnList.size() && !found){
+					if(pawnList.get(i).isAt(x-1, y)){
+						found = true;
+						ret.add(pawnList.get(i));
+					}
+					i++;
+				}
+			}
+			// Right side
+			if(x < this.width-1){
+				found = false;
+				i = 0;
+				while(i < pawnList.size() && !found){
+					if(pawnList.get(i).isAt(x+1, y)){
+						found = true;
+						ret.add(pawnList.get(i));
+					}
+					i++;
+				}
+			}
+			// Top left corner
+			if(x > 0 && y < this.height-1){
+				found = false;
+				i = 0;
+				while(i < pawnList.size() && !found){
+					if(pawnList.get(i).isAt(x-1, y+1)){
+						found = true;
+						ret.add(pawnList.get(i));
+					}
+					i++;
+				}
+			}
+			// Top side
+			if(y < this.height-1){
+				found = false;
+				i = 0;
+				while(i < pawnList.size() && !found){
+					if(pawnList.get(i).isAt(x, y+1)){
+						found = true;
+						ret.add(pawnList.get(i));
+					}
+					i++;
+				}
+			}
+			// Top right corner
+			if(x < this.width-1 && y < this.height-1){
+				found = false;
+				i = 0;
+				while(i < pawnList.size() && !found){
+					if(pawnList.get(i).isAt(x+1, y+1)){
+						found = true;
+						ret.add(pawnList.get(i));
+					}
+					i++;
+				}
+			}
+		} else{
+			System.err.println("Erreur Player.nearbyPawns(): parametre non valide");
+		}
+		return ret;
 	}
 }

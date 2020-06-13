@@ -49,7 +49,34 @@ public class Movement implements java.io.Serializable {
 			this.width = width;
 			this.height = height;
 			
-			// TODO - attribute dir
+			int dX = this.nX - this.oX;
+			int dY = this.nY - this.oY;
+			// North/South
+			if(dX == 0 && dY != 0){
+				if(dY > 0){ // North
+					this.dir = Direction.N;
+				} else{ // South
+					this.dir = Direction.S;
+				}
+			} else if(dX != 0 && dY == 0){ // West/East
+				if(dX > 0){ // East
+					this.dir = Direction.E;
+				} else{ // West
+					this.dir = Direction.W;
+				}
+			} else if(dX != 0 && dX == dY){ // SW/NE
+				if(dX > 0){ // North East
+					this.dir = Direction.NE;
+				} else{ // South West
+					this.dir = Direction.SW;
+				}
+			} else if(dX != 0 && Math.abs(dX) == Math.abs(dY)){ // NW/SE
+				if(dX > 0 && dY < 0){ // South East
+					this.dir = Direction.SE;
+				} else{ // North West
+					this.dir = Direction.NW;
+				}
+			}
 		} else{
 			System.err.println("Erreur Movement(): parametre non valide");
 		}

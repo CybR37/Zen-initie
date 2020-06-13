@@ -5,12 +5,12 @@ package model;
  * @author Théo Koenigs
  */
 public enum Direction {
-	UP,
-	UP_L,
-	UP_R,
-	LEFT,
-	RIGHT,
-	DOWN,
-	DOWN_L,
-	DOWN_R
+	N,
+	NW,
+	NE,
+	W,
+	E,
+	S,
+	SW,
+	SE
 }

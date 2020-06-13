@@ -32,7 +32,7 @@ public class HumanP extends Player {
 		Movement ret = null;
 		if(xPawn >= 0 && xPawn < this.width && yPawn >= 0 && yPawn < this.height && x >= 0 && x < this.width && y >= 0 && y < this.height){
 			Pawn zenPawn = this.pawnList.get(this.pawnList.size()-1);
-			if(zenPawn.isAt(xPawn, yPawn)){
+			if(zenPawn.getType() == PawnType.ZEN && zenPawn.isAt(xPawn, yPawn)){
 				ret = new Movement(zenPawn, x, y, this.pawnList, this.width, this.height);
 			} else{
 				boolean found = false;

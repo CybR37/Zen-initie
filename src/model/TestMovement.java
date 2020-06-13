@@ -32,11 +32,11 @@ public class TestMovement {
 
     @Test
     public void testGetDir(){
-        assertEquals(Direction.RIGHT, this.mvt.getDir());
+        assertEquals(Direction.E, this.mvt.getDir());
 
         Pawn p = new Pawn(7, 9, PawnType.BLACK);
         Movement move = new Movement(p, 7, 5, this.array, 11, 11);
-        assertEquals(Direction.UP, move.getDir());
+        assertEquals(Direction.S, move.getDir());
     }
 
     @Test

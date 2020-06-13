@@ -29,6 +29,8 @@ public class Pawn implements java.io.Serializable {
 			this.y = y;
 			this.type = color;
 			this.out = false;
+		} else{
+			System.err.println("Erreur Pawn(): parametre non valide");
 		}
 	}
 
