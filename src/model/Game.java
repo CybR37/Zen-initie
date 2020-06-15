@@ -55,7 +55,6 @@ public class Game implements java.io.Serializable {
 
 			this.whitePawn = new ArrayList<Pawn>();
 			this.blackPawn = new ArrayList<Pawn>();
-			this.zenPawn = new Pawn(this.width/2, this.height/2, PawnType.ZEN);
 				
 			this.initializeGrid();
 			this.pawnPlacement();
@@ -85,6 +84,7 @@ public class Game implements java.io.Serializable {
 	 * Starts the game
 	 */
 	public void start() {
+		this.showGrid();
 		// TODO - implement Game.start
 	}
 
@@ -100,8 +100,7 @@ public class Game implements java.io.Serializable {
 	 * @return true if a player has won, otherwise false
 	 */
 	public boolean isWin(){
-		// TODO - implement Game.isWin
-		return false;
+		return this.current.isAllConnected();
 	}
 
 	/**
@@ -130,6 +129,13 @@ public class Game implements java.io.Serializable {
 	 * Creates and places the pawns according to the model
 	 */
 	private void pawnPlacement() {
+		this.zenPawn = new Pawn(this.width/2, this.height/2, PawnType.ZEN);
+		if(this.grid[this.width/2][this.height/2] != null){
+			this.grid[this.width/2][this.height/2].setFree(false);
+		} else{
+			System.err.println("Erreur Game.pawnPlacement(): la grille n'est pas initialisee");
+		}
+
 		for(int i=0; i < this.grid.length; i++){
 			for(int j=0; j < this.grid[i].length; j++){
 				Square sq = this.grid[i][j];
@@ -151,7 +157,7 @@ public class Game implements java.io.Serializable {
 	/**
 	 * Go to the next round, calls {@link #isWin()}, if true ends the game
 	 */
-	private void nextMove() {
+	public void nextMove() {
 		// TODO - implement Game.nextMove
 	}
 
@@ -193,7 +199,94 @@ public class Game implements java.io.Serializable {
 	 * Prints the game interface
 	 */
 	public void showGrid() {
-		// TODO - implement Game.showGrid
+		if(this.grid.length != 0){
+			ArrayList<Pawn> list = new ArrayList<Pawn>();
+			list.addAll(this.whitePawn);
+			list.addAll(this.blackPawn);
+			list.add(this.zenPawn);
+			boolean found;
+			Pawn p;
+			int k;
+
+			System.out.println("------------------------------------------------");
+			for(int i=this.grid[0].length; i > 0; i--){
+				if(i < 10){
+					System.out.print(i+"  ");
+				} else{
+					System.out.print(i+" ");
+				}
+
+				for(int j=0; j < this.grid.length; j++){
+					if(!this.grid[j][i-1].isFree()){
+						found = false;
+						k = 0;
+						// If the program is executed on Windows
+						if(System.getProperty("os.name").toLowerCase().contains("win")){
+							while(k < list.size() && !found){ // Print B and W for black and white pawns
+								p = list.get(k);
+								if(p.isAt(j, i-1)){
+									found = true;
+									list.remove(p);
+									if(p.getType() == PawnType.BLACK){
+										System.out.print("N ");
+									} else if(p.getType() == PawnType.WHITE){
+										System.out.print("B ");
+									} else{
+										System.out.print("Z ");
+									}
+								}
+								k++;
+							}
+						} else{
+							while(k < list.size() && !found){ // Print dots for black and white pawns
+								p = list.get(k);
+								if(p.isAt(j, i-1)){
+									found = true;
+									list.remove(p);
+									if(p.getType() == PawnType.BLACK){
+										System.out.print("\u25E6 ");
+									} else if(p.getType() == PawnType.WHITE){
+										System.out.print("\u2022 ");
+									} else{
+										System.out.print("Z ");
+									}
+								}
+								k++;
+							}
+						}
+					} else{
+						System.out.print("x ");
+					}
+				}
+				// Indicators
+				if(System.getProperty("os.name").toLowerCase().contains("win")){
+					if(i == this.grid[0].length-1){
+						System.out.print("\tN Pions noirs");
+					} else if(i == this.grid[0].length-2){
+						System.out.print("\tB Pions blancs");
+					} else if(i == this.grid[0].length-3){
+						System.out.print("\tZ Pion Zen");
+					} else if(i == this.grid[0].length-5){
+						System.out.print("\tJoueur "+this.current.name);
+					}
+				} else{
+					if(i == this.grid[0].length-1){
+						System.out.print("\t\u25E6 Pions noirs");
+					} else if(i == this.grid[0].length-2){
+						System.out.print("\t\u2022 Pions blancs");
+					} else if(i == this.grid[0].length-3){
+						System.out.print("\tZ Pion Zen");
+					} else if(i == this.grid[0].length-5){
+						System.out.print("\tJoueur "+this.current.name);
+					}
+				}
+				System.out.print("\n");
+			}
+			System.out.println("   A B C D E F G H I J K");
+			System.out.println();
+		} else{
+			System.err.println("Erreur Game.showGrid(): la grille n'a pas ete initialisee");
+		}
 	}
 
 	/**
@@ -216,7 +309,18 @@ public class Game implements java.io.Serializable {
 		}
 	}
 
+	/**
+	 * Returns the instance of the current player
+	 * @return the current player
+	 */
 	public Player getCurrent(){
 		return this.current;
+	}
+
+	/**
+	 * Swap the current player between player 1 and player 2
+	 */
+	public void changeCurrent(){
+
 	}
 }
