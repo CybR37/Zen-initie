@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
 
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
@@ -63,9 +65,9 @@ public class Game implements java.io.Serializable {
 			pawnList.addAll(this.whitePawn);
 			pawnList.addAll(this.blackPawn);
 			pawnList.add(this.zenPawn);
-			this.player1 = new HumanP(this.ui, "1", this.whitePawn, pawnList, this.width, this.height);
+			this.player1 = new HumanP(this.ui, "1 (Pions blancs)", this.whitePawn, pawnList, this.width, this.height);
 			if(this.mode == PlayerMode.HVH){
-				this.player2 = new HumanP(this.ui, "2", this.blackPawn, pawnList, this.width, this.height);
+				this.player2 = new HumanP(this.ui, "2 (Pions noirs)", this.blackPawn, pawnList, this.width, this.height);
 			} else{
 				this.player2 = new BotP(this.ui, "2", this.blackPawn, pawnList, this.width, this.height);
 			}
@@ -76,23 +78,33 @@ public class Game implements java.io.Serializable {
 				this.current = this.player2;
 			}
 		} else{
-			System.err.println("Erreur Game(): parametre non valide");
+			System.out.println("Erreur Game(): parametre non valide");
 		}
 	}
 
 	/**
-	 * Starts the game
+	 * Starts the game, calls {@link #isWin()}, if true ends the game
 	 */
 	public void start() {
-		this.showGrid();
-		// TODO - implement Game.start
-	}
-
-	/**
-	 * Stops the game
-	 */
-	public void stop() {
-		// TODO - implement Game.stop
+		boolean end = false;
+		while(!end){
+			this.showGrid();
+			if(this.nextMove()){
+				end = true;
+				this.saveState("saveFile.zenSave");
+			}
+			this.changeCurrent();
+			if(this.isWin()){
+				end = true;
+				changeCurrent();
+				if(this.isWin()){ // If it's a draw
+					System.out.println("Match nul !");
+				} else{
+					changeCurrent();
+					System.out.println("Le joueur "+this.current.name+" gagne la partie !");
+				}
+			}
+		}
 	}
 
 	/**
@@ -111,17 +123,17 @@ public class Game implements java.io.Serializable {
 		File folder = new File(ZenInitie.SAVE_PATH);
 		if(!folder.exists() || !folder.isDirectory()){
 			if(!folder.mkdirs()){
-				System.err.println("Erreur Game.saveState(): echec de la creation du dossier "+ZenInitie.SAVE_PATH);
+				System.out.println("Erreur Game.saveState(): echec de la creation du dossier "+ZenInitie.SAVE_PATH);
 			}
 		}
 		try{
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(fileName)));
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(ZenInitie.SAVE_PATH+fileName)));
 			out.writeObject(this);
 			out.close();
 		} catch(java.io.FileNotFoundException e){
-			System.err.println("Erreur Game.savestate(): pas de partie sauvegardee");
+			System.out.println("Erreur Game.savestate(): pas de partie sauvegardee");
 		} catch(java.io.IOException e){
-			System.err.println("Erreur Game.savestate(): erreur dans la gestion du fichier");
+			System.out.println("Erreur Game.savestate(): erreur dans la gestion du fichier");
 		}
 	}
 
@@ -133,7 +145,7 @@ public class Game implements java.io.Serializable {
 		if(this.grid[this.width/2][this.height/2] != null){
 			this.grid[this.width/2][this.height/2].setFree(false);
 		} else{
-			System.err.println("Erreur Game.pawnPlacement(): la grille n'est pas initialisee");
+			System.out.println("Erreur Game.pawnPlacement(): la grille n'est pas initialisee");
 		}
 
 		for(int i=0; i < this.grid.length; i++){
@@ -141,24 +153,112 @@ public class Game implements java.io.Serializable {
 				Square sq = this.grid[i][j];
 				if(sq != null){
 					if(sq.getType() == SymbolSquare.CHINESE){
-						this.whitePawn.add(new Pawn(i, j, PawnType.BLACK));
+						this.blackPawn.add(new Pawn(i, j, PawnType.BLACK));
 						sq.setFree(false);
 					} else if(sq.getType() == SymbolSquare.GEOMETRIC){
-						this.blackPawn.add(new Pawn(i, j, PawnType.WHITE));
+						this.whitePawn.add(new Pawn(i, j, PawnType.WHITE));
 						sq.setFree(false);
 					}
 				} else{
-					System.err.println("Erreur Game.pawnPlacement(): la grille n'est pas initialisee");
+					System.out.println("Erreur Game.pawnPlacement(): la grille n'est pas initialisee");
 				}
 			}
 		}
 	}
 
 	/**
-	 * Go to the next round, calls {@link #isWin()}, if true ends the game
+	 * Prepare the next round
+	 * @return true if the move is aborted by "menu" keyword
 	 */
-	public void nextMove() {
-		// TODO - implement Game.nextMove
+	@SuppressWarnings("resource")
+	public boolean nextMove() {
+		boolean endRequired = false;
+		boolean mvtValid = false;
+		Movement move;
+		Scanner in = new Scanner(System.in);
+		String coords;
+
+		do{
+			if(this.current instanceof HumanP){
+				move = null;
+				int[] pawnCoords = null;
+				int[] newCoords = null;
+
+				do{
+					System.out.println("Coordonnees du pion: ");
+					coords = in.nextLine();
+					if(coords.equalsIgnoreCase("menu")){
+						endRequired = true;
+					} else{
+						pawnCoords = ((HumanP) this.current).readCoords(coords);
+					}
+				} while(!endRequired && pawnCoords == null);
+
+				while(!endRequired && newCoords == null){
+					System.out.println("Nouvelles coordonnees pour le pion: ");
+					coords = in.nextLine();
+					if(coords.equalsIgnoreCase("menu")){
+						endRequired = true;
+					} else{
+						newCoords = ((HumanP) this.current).readCoords(coords);
+					}
+				}
+
+				if(pawnCoords != null && newCoords != null){
+					move = ((HumanP) this.current).newMove(pawnCoords[0], pawnCoords[1], newCoords[0], newCoords[1]);
+				}
+			} else{
+				move = ((BotP) this.current).newMove();
+			}
+
+			if(move != null){
+				if(move.getPawn() == this.zenPawn && this.oldMov != null){ // The Zen pawn cannot return to its previous location
+					if(this.oldMov.getPawn() != this.zenPawn || move.getNX() != this.oldMov.getOX() || move.getNY() != this.oldMov.getOY()){
+						mvtValid = move.isValid();
+					}
+				} else{
+					mvtValid = move.isValid();
+				}
+
+				if(mvtValid){
+					if(!this.grid[move.getNX()][move.getNY()].isFree()){
+						boolean found = false;
+						Pawn p;
+						ArrayList<Pawn> pawnList = new ArrayList<Pawn>();
+						pawnList.addAll(this.whitePawn);
+						pawnList.addAll(this.blackPawn);
+						pawnList.add(this.zenPawn);
+						Iterator<Pawn> it = pawnList.iterator();
+						while(it.hasNext() && !found){
+							p = it.next();
+							if(p.isAt(move.getNX(), move.getNY())){ // Remove captured pawns
+								found = true;
+								it.remove();
+								if(p.getType() == PawnType.BLACK){
+									this.blackPawn.remove(p);
+								} else if(p.getType() == PawnType.WHITE){
+									this.whitePawn.remove(p);
+								}
+							}
+						}
+					}
+
+					move.getPawn().setX(move.getNX());
+					move.getPawn().setY(move.getNY());
+
+					this.grid[move.getOX()][move.getOY()].setFree(true);
+					this.grid[move.getNX()][move.getNY()].setFree(false);
+
+					this.oldMov = move;
+				} else{
+					System.out.println("Erreur Game.nextMove(): le mouvement demande n'est pas valide");
+				}
+			} else if(!endRequired){
+				System.out.println("Erreur Game.nextMove(): le mouvement demande n'est pas valide");
+				System.out.println("Game.nextMove()");
+			}
+		} while(!endRequired && !mvtValid);
+		return endRequired;
 	}
 
 	/**
@@ -171,7 +271,7 @@ public class Game implements java.io.Serializable {
 			this.player1.setUI(this.ui);
 			this.player2.setUI(this.ui);
 		} else{
-			System.err.println("Erreur Game.setUI(): parametre non valide");
+			System.out.println("Erreur Game.setUI(): parametre non valide");
 		}
 	}
 
@@ -285,27 +385,7 @@ public class Game implements java.io.Serializable {
 			System.out.println("   A B C D E F G H I J K");
 			System.out.println();
 		} else{
-			System.err.println("Erreur Game.showGrid(): la grille n'a pas ete initialisee");
-		}
-	}
-
-	/**
-	 * Removes pawns captured by the opponent
-	 */
-	public void removeOutPawns(){
-		java.util.Iterator<Pawn> it = this.current.pawnList.iterator();
-		Pawn p;
-		boolean found = false;
-		while(it.hasNext() && !found){
-			p = it.next();
-			if(p.isOut()){
-				it.remove();
-				if(p.getType() == PawnType.BLACK){
-					this.blackPawn.remove(p);
-				} else if(p.getType() == PawnType.WHITE){
-					this.whitePawn.remove(p);
-				}
-			}
+			System.out.println("Erreur Game.showGrid(): la grille n'a pas ete initialisee");
 		}
 	}
 
@@ -321,6 +401,10 @@ public class Game implements java.io.Serializable {
 	 * Swap the current player between player 1 and player 2
 	 */
 	public void changeCurrent(){
-
+		if(this.current == this.player1){
+			this.current = this.player2;
+		} else {
+			this.current = this.player1;
+		}
 	}
 }

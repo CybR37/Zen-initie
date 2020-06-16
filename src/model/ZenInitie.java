@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class ZenInitie {
 
 	/** Path of saved games */
-	static final String SAVE_PATH = "../saves/";
+	static final String SAVE_PATH = "./saves/";
 	/** Game instance */
 	private Game currentGame;
 	/** The interface mode used */
@@ -38,11 +38,11 @@ public class ZenInitie {
 			this.currentGame.setUI(this.ui);
 			input.close();
 		} catch(java.io.FileNotFoundException e){
-			System.err.println("Erreur ZenInitie.loadGame(): "+e.getMessage());
+			System.out.println("Erreur ZenInitie.loadGame(): "+e.getMessage());
 		} catch(java.io.IOException e){
-			System.err.println("Erreur ZenInitie.loadGame(): erreur dans la gestion du fichier");
+			System.out.println("Erreur ZenInitie.loadGame(): erreur dans la gestion du fichier");
 		} catch(ClassNotFoundException e){
-			System.err.println("Erreur ZenInitie.loadGame(): classe non trouvee");
+			System.out.println("Erreur ZenInitie.loadGame(): classe non trouvee");
 		}
 	}
 
@@ -58,9 +58,9 @@ public class ZenInitie {
 			System.out.println("  / /  / _ \\/ __ \\   / /|// / __ \\/ / __/ / _ \\			");
 			System.out.println(" / /__/  __/ / / /  / /  / / / / / / /_/ /  __/			");
 			System.out.println("/____/\\___/_/ /_/  /_/  /_/_/ /_/_/\\__/_/\\___/ 			");
+			System.out.println();
 			
 			while(ui == UIMode.TEXT && !end){
-				System.out.println();
 				System.out.println("----------------------Menu----------------------");
 				System.out.println("1- Nouvelle partie");
 				System.out.println("2- Charger la derniere partie");
@@ -77,6 +77,7 @@ public class ZenInitie {
 					this.showGameSettings();
 				} else if(rep.equals("2")){
 					this.loadGame(SAVE_PATH + "saveFile.zenSave");
+					this.currentGame.start();
 				} else if(rep.equals("3")){
 					this.showRules();
 				} else if(rep.equals("4")){
@@ -152,7 +153,7 @@ public class ZenInitie {
 		if(ui != null){
 			this.ui = ui;
 		} else{
-			System.err.println("Erreur Game.setUI(): parametre non valide");
+			System.out.println("Erreur Game.setUI(): parametre non valide");
 		}
 	}
 }

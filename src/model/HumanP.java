@@ -26,6 +26,10 @@ public class HumanP extends Player {
 
 	/**
 	 * Creates a new move based on the coordinates
+	 * @param xPawn x coordinate of the pawn
+	 * @param yPawn y coordinate of the pawn
+	 * @param x new x coordinate
+	 * @param y new y coordinate
 	 * @return the move desired by the caller
 	 */
 	public Movement newMove(int xPawn, int yPawn, int x, int y) {
@@ -46,13 +50,15 @@ public class HumanP extends Player {
 				}
 			}
 		} else{
-			System.err.println("Erreur HumanP.newMove(): parametre non valide");
+			System.out.println("Erreur HumanP.newMove(): parametre non valide");
 		}
 		return ret;
 	}
 
 	/**
 	 * Reads coordinates from the player's input
+	 * @param coord raw coordinates
+	 * @return converted coordinates
 	 */
 	public int[] readCoords(String coord) {
 		int[] ret = null;
@@ -63,33 +69,33 @@ public class HumanP extends Player {
 
 				if(Character.isLetter(firstCoord) && Character.isDigit(secondCoord)){
 					firstCoord = Character.toUpperCase(firstCoord);
-					int secondCoordInt = Character.digit(secondCoord, Character.MIN_RADIX);
+					int secondCoordInt = Character.digit(secondCoord, Character.MAX_RADIX) - 1;
 					if(firstCoord >= 'A' && firstCoord <= 'K' && secondCoordInt >= 0 && secondCoordInt < this.height){
 						ret = new int[2];
 						ret[0] = firstCoord - 'A'; //Convert letter to integer
 						ret[1] = secondCoordInt;
 					} else{
-						System.err.println("Erreur HumanP.readCoords(): coordonnees non valides");
+						System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
 					}
 
 				} else if(Character.isDigit(firstCoord) && Character.isLetter(secondCoord)){
 					secondCoord = Character.toUpperCase(secondCoord);
-					int firstCoordInt = Character.digit(firstCoord, Character.MIN_RADIX);
+					int firstCoordInt = Character.digit(firstCoord, Character.MAX_RADIX) - 1;
 					if(secondCoord >= 'A' && secondCoord <= 'K' && firstCoordInt >= 0 && firstCoordInt < this.height){
 						ret = new int[2];
 						ret[0] = secondCoord - 'A'; //Convert letter to integer
 						ret[1] = firstCoordInt;
 					} else{
-						System.err.println("Erreur HumanP.readCoords(): coordonnees non valides");
+						System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
 					}
 				} else {
-					System.err.println("Erreur HumanP.readCoords(): coordonnees non valides");
+					System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
 				}
-			} else if(coord.equalsIgnoreCase("menu")){
-				// TODO - return to menu
+			} else{
+				System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
 			}
 		} else{
-			System.err.println("Erreur HumanP.readCoords(): coordonnees non valides");
+			System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
 		}
 		return ret;
 	}

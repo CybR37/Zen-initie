@@ -33,14 +33,15 @@ public abstract class Player implements java.io.Serializable {
 	 * @param height number of rows (grid height)
 	 */
 	public Player(UIMode ui, String name, ArrayList<Pawn> playerPawn, ArrayList<Pawn> pawnList, int width, int height) {
-		if(ui != null && playerPawn != null && pawnList != null && width == 11 && height == 11){
+		if(ui != null && name != null && playerPawn != null && pawnList != null && width == 11 && height == 11){
 			this.ui = ui;
+			this.name = name;
 			this.myPawns = playerPawn;
 			this.pawnList = pawnList;
 			this.width = width;
 			this.height = height;
 		} else{
-			System.err.println("Erreur Player(): parametre non valide");
+			System.out.println("Erreur Player(): parametre non valide");
 		}
 	}
 
@@ -52,7 +53,7 @@ public abstract class Player implements java.io.Serializable {
 		if(ui != null){
 			this.ui = ui;
 		} else{
-			System.err.println("Erreur Player.setUI(): parametre non valide");
+			System.out.println("Erreur Player.setUI(): parametre non valide");
 		}
 	}
 
@@ -126,7 +127,7 @@ public abstract class Player implements java.io.Serializable {
 		ArrayList<Pawn> ret = null;
 		if(x >= 0 && x < this.width && y >= 0 && y < this.height && pawnList != null){
 			ret = new ArrayList<Pawn>();
-			boolean found = false;
+			/*boolean found = false;
 			int i = 0;
 			// Bottom left corner
 			if(x > 0 && y > 0){
@@ -221,9 +222,21 @@ public abstract class Player implements java.io.Serializable {
 					}
 					i++;
 				}
+			}*/
+			for (Pawn p : pawnList) {
+				if(p.isAt(x-1, y-1) // Bottom left corner
+				|| p.isAt(x, y-1) // Bottom side
+				|| p.isAt(x+1, y-1) // Bottom right corner
+				|| p.isAt(x-1, y) // Left side
+				|| p.isAt(x+1, y) // Right side
+				|| p.isAt(x-1, y+1) // Top left corner
+				|| p.isAt(x, y+1) // Top side
+				|| p.isAt(x+1, y+1)){ // Top right corner
+					ret.add(p);
+				}
 			}
 		} else{
-			System.err.println("Erreur Player.nearbyPawns(): parametre non valide");
+			System.out.println("Erreur Player.nearbyPawns(): parametre non valide");
 		}
 		return ret;
 	}

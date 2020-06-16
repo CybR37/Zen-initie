@@ -14,8 +14,6 @@ public class Pawn implements java.io.Serializable {
 	private int x;
 	/** Y coordinates */
 	private int y;
-	/** Pawn state */
-	private boolean out;
 
 	/**
 	 * Class constructor, initializes the attributes with the parameters
@@ -28,9 +26,8 @@ public class Pawn implements java.io.Serializable {
 			this.x = x;
 			this.y = y;
 			this.type = color;
-			this.out = false;
 		} else{
-			System.err.println("Erreur Pawn(): parametre non valide");
+			System.out.println("Erreur Pawn(): parametre non valide");
 		}
 	}
 
@@ -90,21 +87,5 @@ public class Pawn implements java.io.Serializable {
 	 */
 	public PawnType getType() {
 		return this.type;
-	}
-
-	/**
-	 * Returns the pawn state
-	 * @return the pawn state
-	 */
-	public boolean isOut(){
-		return this.out;
-	}
-
-	/**
-	 * Changes the pawn state
-	 * @param out new pawn state
-	 */
-	public void setState(boolean out){
-		this.out = out;
 	}
 }

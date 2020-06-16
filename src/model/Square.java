@@ -22,7 +22,7 @@ public class Square implements java.io.Serializable {
 			this.type = type;
 			this.free = true;
 		} else{
-			System.err.println("Erreur Square(): parametre non valide");
+			System.out.println("Erreur Square(): parametre non valide");
 		}
 	}
 

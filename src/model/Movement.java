@@ -81,7 +81,7 @@ public class Movement implements java.io.Serializable {
 				}
 			}
 		} else{
-			System.err.println("Erreur Movement(): parametre non valide");
+			System.out.println("Erreur Movement(): parametre non valide");
 		}
 	}
 
@@ -340,8 +340,16 @@ public class Movement implements java.io.Serializable {
 				}
 			}
 		} else{
-			System.err.println("Erreur Player.nearbyPawns(): parametre non valide");
+			System.out.println("Erreur Player.nearbyPawns(): parametre non valide");
 		}
 		return ret;
+	}
+
+	/**
+	 * Returns the pawn to move
+	 * @return pawn to move
+	 */
+	public Pawn getPawn(){
+		return this.pawn;
 	}
 }

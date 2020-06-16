@@ -18,7 +18,6 @@ public class TestPawn {
         assertEquals(5, p.getX());
         assertEquals(9, p.getY());
         assertEquals(PawnType.ZEN, p.getType());
-        assertFalse(p.isOut());
     }
 
     @Test
@@ -28,7 +27,6 @@ public class TestPawn {
         assertEquals(0, p.getX());
         assertEquals(0, p.getY());
         assertNull(p.getType());
-        assertFalse(p.isOut());
     }
 
     @Test
@@ -68,13 +66,5 @@ public class TestPawn {
     public void testSetYWrongCoords(){
         this.pawn.setY(-3);
         assertEquals(4, this.pawn.getY());
-    }
-
-    @Test
-    public void testSetState(){
-        this.pawn.setState(true);
-        assertTrue(this.pawn.isOut());
-        this.pawn.setState(false);
-        assertFalse(this.pawn.isOut());
     }
 }
