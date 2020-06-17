@@ -69,7 +69,7 @@ public class Game implements java.io.Serializable {
 			if(this.mode == PlayerMode.HVH){
 				this.player2 = new HumanP(this.ui, "2 (Pions noirs)", this.blackPawn, pawnList, this.width, this.height);
 			} else{
-				this.player2 = new BotP(this.ui, "2", this.blackPawn, pawnList, this.width, this.height);
+				this.player2 = new BotP(this.ui, "ordinateur", this.blackPawn, pawnList, this.width, this.height);
 			}
 
 			if(Math.random() < 0.5){
@@ -87,10 +87,14 @@ public class Game implements java.io.Serializable {
 	 */
 	public void start() {
 		boolean end = false;
+		System.out.println("Le joueur "+this.current.name+" commence !");
 		while(!end){
-			this.showGrid();
+			if(this.current instanceof HumanP){
+				this.showGrid();
+			}
 			if(this.nextMove()){
 				end = true;
+				System.out.println("Arret de la partie...");
 				this.saveState("saveFile.zenSave");
 			}
 			this.changeCurrent();

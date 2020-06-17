@@ -74,31 +74,30 @@ public abstract class Player implements java.io.Serializable {
 			ArrayList<Pawn> connectedList;
 			// Getting the first pawn to check
 			int count0Connections = 0;
+			int countMore1Connection;
 			Pawn pawnChecked;
 			do{
-				i = 0;
-				found = false;
 				do{
-					pawnChecked = list.get(i);
-					connectedList = this.nearbyPawns(pawnChecked.getX(), pawnChecked.getY(), list);
-					if(connectedList.size() == 1){
-						found = true;
-					} else if(connectedList.size() == 0){
-						count0Connections++;
+					i = 0;
+					found = false;
+					do{
+						pawnChecked = list.get(i);
+						connectedList = this.nearbyPawns(pawnChecked.getX(), pawnChecked.getY(), list);
+						if(connectedList.size() == 1){
+							found = true;
+						} else if(connectedList.size() == 0){
+							count0Connections++;
+						}
+						i++;
+					} while(!found && i < list.size());
+					// If all pawns have two or more connections, remove one pawn
+					if(!found && count0Connections == 0){
+						list.remove(pawnChecked);
 					}
-					i++;
-				} while(!found && i < list.size());
-				// If all pawns have two or more connections, remove one pawn
-				if(!found && count0Connections == 0){
-					list.remove(pawnChecked);
-				}
-			} while(!found && count0Connections == 0);
+				} while(!found && count0Connections == 0);
 
-			boolean end;
-			int countMore1Connection;
-			do{
+				boolean end = false;
 				countMore1Connection = 0;
-				end = false;
 				while(!end){
 					connectedList = this.nearbyPawns(pawnChecked.getX(), pawnChecked.getY(), list);
 					list.remove(pawnChecked);

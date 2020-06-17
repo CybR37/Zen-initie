@@ -56,7 +56,7 @@ public class HumanP extends Player {
 	}
 
 	/**
-	 * Reads coordinates from the player's input
+	 * Converts coordinates from the raw ones
 	 * @param coord raw coordinates
 	 * @return converted coordinates
 	 */
@@ -64,27 +64,57 @@ public class HumanP extends Player {
 		int[] ret = null;
 		if(coord != null){
 			if(coord.length() == 2){
-				char firstCoord = coord.charAt(0);
-				char secondCoord = coord.charAt(1);
+				char firstCh = coord.charAt(0);
+				char secondCh = coord.charAt(1);
 
-				if(Character.isLetter(firstCoord) && Character.isDigit(secondCoord)){
-					firstCoord = Character.toUpperCase(firstCoord);
-					int secondCoordInt = Character.digit(secondCoord, Character.MAX_RADIX) - 1;
-					if(firstCoord >= 'A' && firstCoord <= 'K' && secondCoordInt >= 0 && secondCoordInt < this.height){
+				if(Character.isLetter(firstCh) && Character.isDigit(secondCh)){
+					char firstCoord = Character.toUpperCase(firstCh);
+					int secondCoord = Character.digit(secondCh, Character.MAX_RADIX) - 1;
+					if(firstCoord >= 'A' && firstCoord <= 'K' && secondCoord >= 0 && secondCoord < this.height){
 						ret = new int[2];
 						ret[0] = firstCoord - 'A'; //Convert letter to integer
-						ret[1] = secondCoordInt;
+						ret[1] = secondCoord;
 					} else{
 						System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
 					}
 
-				} else if(Character.isDigit(firstCoord) && Character.isLetter(secondCoord)){
-					secondCoord = Character.toUpperCase(secondCoord);
-					int firstCoordInt = Character.digit(firstCoord, Character.MAX_RADIX) - 1;
-					if(secondCoord >= 'A' && secondCoord <= 'K' && firstCoordInt >= 0 && firstCoordInt < this.height){
+				} else if(Character.isDigit(firstCh) && Character.isLetter(secondCh)){
+					char firstCoord = Character.toUpperCase(secondCh);
+					int secondCoord = Character.digit(firstCh, Character.MAX_RADIX) - 1;
+					if(firstCoord >= 'A' && firstCoord <= 'K' && secondCoord >= 0 && secondCoord < this.height){
 						ret = new int[2];
-						ret[0] = secondCoord - 'A'; //Convert letter to integer
-						ret[1] = firstCoordInt;
+						ret[0] = firstCoord - 'A'; //Convert letter to integer
+						ret[1] = secondCoord;
+					} else{
+						System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
+					}
+				} else {
+					System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
+				}
+			} else if(coord.length() == 3){
+				char firstCh = coord.charAt(0);
+				char secondCh = coord.charAt(1);
+				char thirdCh = coord.charAt(2);
+
+				if(Character.isLetter(firstCh) && Character.isDigit(secondCh) && Character.isDigit(thirdCh)){
+					char firstCoord = Character.toUpperCase(firstCh);
+					int secondCoord = Integer.parseInt(String.valueOf(secondCh)+String.valueOf(thirdCh)) - 1;
+					System.out.println(secondCoord);
+					if(firstCoord >= 'A' && firstCoord <= 'K' && secondCoord >= 0 && secondCoord < this.height){
+						ret = new int[2];
+						ret[0] = firstCoord - 'A'; //Convert letter to integer
+						ret[1] = secondCoord;
+					} else{
+						System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
+					}
+
+				} else if(Character.isDigit(firstCh) && Character.isDigit(secondCh) && Character.isLetter(thirdCh)){
+					char firstCoord = Character.toUpperCase(thirdCh);
+					int secondCoord = Integer.parseInt(String.valueOf(firstCh)+String.valueOf(secondCh)) - 1;
+					if(firstCoord >= 'A' && firstCoord <= 'K' && secondCoord >= 0 && secondCoord < this.height){
+						ret = new int[2];
+						ret[0] = firstCoord - 'A'; //Convert letter to integer
+						ret[1] = secondCoord;
 					} else{
 						System.out.println("Erreur HumanP.readCoords(): coordonnees non valides");
 					}

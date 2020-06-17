@@ -139,6 +139,8 @@ public class ZenInitie {
 	/**
 	 * Initializes the currentGame attribute with a new instance of the Game class with the selected game mode
 	 * @param gameMode selected game mode
+	 * @param width number of columns (grid width)
+	 * @param height number of rows (grid height)
 	 */
 	public void newGame(PlayerMode gameMode, int width, int height) {
 		this.currentGame = new Game(this.ui, gameMode, width, height);

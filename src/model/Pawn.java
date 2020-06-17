@@ -43,7 +43,7 @@ public class Pawn implements java.io.Serializable {
 
 	/**
 	 * Returns the x coordinate
-	 * @return the x coordinate
+	 * @return x coordinate
 	 */
 	public int getX() {
 		return this.x;
@@ -63,7 +63,7 @@ public class Pawn implements java.io.Serializable {
 
 	/**
 	 * Returns the y coordinate
-	 * @return the y coordinate
+	 * @return y coordinate
 	 */
 	public int getY() {
 		return this.y;
@@ -83,7 +83,7 @@ public class Pawn implements java.io.Serializable {
 
 	/**
 	 * Returns the pawn type 
-	 * @return the pawn type
+	 * @return pawn type
 	 */
 	public PawnType getType() {
 		return this.type;

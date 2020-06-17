@@ -34,6 +34,7 @@ public class Movement implements java.io.Serializable {
 	/**
 	 * Class constructor, initializes the attributes with the parameters
 	 * @param pawn selected pawn
+	 * @param author movement author
 	 * @param newX new x coordinate
 	 * @param newY new y coordinate
 	 * @param pawnList list of game pawns
@@ -303,7 +304,7 @@ public class Movement implements java.io.Serializable {
 
 	/**
 	 * Returns the new x coordinate 
-	 * @return the new x coordinate
+	 * @return new x coordinate
 	 */
 	public int getNX() {
 		return this.nX;
@@ -311,7 +312,7 @@ public class Movement implements java.io.Serializable {
 
 	/**
 	 * Returns the new y coordinate
-	 * @return the new y coordinate
+	 * @return new y coordinate
 	 */
 	public int getNY() {
 		return this.nY;
