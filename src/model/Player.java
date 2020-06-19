@@ -239,4 +239,12 @@ public abstract class Player implements java.io.Serializable {
 		}
 		return ret;
 	}
+
+	/**
+	 * Returns the player name
+	 * @return player name
+	 */
+	public String getName() {
+		return this.name;
+	}	
 }

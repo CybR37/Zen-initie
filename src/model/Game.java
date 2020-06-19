@@ -1,8 +1,9 @@
 package model;
 
+import controller.ActionCGame;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
 
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
@@ -16,6 +17,8 @@ public class Game implements java.io.Serializable {
 
 	/** The version for serialization and deserialization */
 	private static final long serialVersionUID = 1;
+	/** Controller instance */
+	private ActionCGame control;
 	/** List of white pawns */
 	private ArrayList<Pawn> whitePawn;
 	/** List of black pawns */
@@ -43,13 +46,16 @@ public class Game implements java.io.Serializable {
 
 	/**
 	 * Class constructor, initializes the attributes with the parameters
+	 * @param controller controller instance
 	 * @param ui the interface mode used
 	 * @param mode game mode
 	 * @param width number of columns (grid width)
 	 * @param height number of rows (grid height)
 	 */
-	public Game(UIMode ui, PlayerMode mode, int width, int height) {
-		if(ui != null && mode != null && width == 11 && height == 11){
+	public Game(ActionCGame controller, UIMode ui, PlayerMode mode, int width, int height) {
+		if(controller != null && ui != null && mode != null && width == 11 && height == 11){
+			this.control = controller;
+			this.control.setModelClasses(this);
 			this.ui = ui;
 			this.mode = mode;
 			this.width = width;
@@ -87,25 +93,25 @@ public class Game implements java.io.Serializable {
 	 */
 	public void start() {
 		boolean end = false;
-		System.out.println("Le joueur "+this.current.name+" commence !");
+		this.control.printStartUI();
 		while(!end){
 			if(this.current instanceof HumanP){
-				this.showGrid();
+				this.control.printGridUI();
 			}
 			if(this.nextMove()){
 				end = true;
-				System.out.println("Arret de la partie...");
+				this.control.printEndUI();
 				this.saveState("saveFile.zenSave");
 			}
 			this.changeCurrent();
 			if(this.isWin()){
 				end = true;
-				changeCurrent();
+				this.changeCurrent();
 				if(this.isWin()){ // If it's a draw
-					System.out.println("Match nul !");
+					this.control.printWinUI(true);
 				} else{
-					changeCurrent();
-					System.out.println("Le joueur "+this.current.name+" gagne la partie !");
+					this.changeCurrent();
+					this.control.printWinUI(false);
 				}
 			}
 		}
@@ -174,42 +180,19 @@ public class Game implements java.io.Serializable {
 	 * Prepare the next round
 	 * @return true if the move is aborted by "menu" keyword
 	 */
-	@SuppressWarnings("resource")
 	public boolean nextMove() {
 		boolean endRequired = false;
 		boolean mvtValid = false;
 		Movement move;
-		Scanner in = new Scanner(System.in);
-		String coords;
 
 		do{
+			move = null;
 			if(this.current instanceof HumanP){
-				move = null;
-				int[] pawnCoords = null;
-				int[] newCoords = null;
-
-				do{
-					System.out.println("Coordonnees du pion: ");
-					coords = in.nextLine();
-					if(coords.equalsIgnoreCase("menu")){
-						endRequired = true;
-					} else{
-						pawnCoords = ((HumanP) this.current).readCoords(coords);
-					}
-				} while(!endRequired && pawnCoords == null);
-
-				while(!endRequired && newCoords == null){
-					System.out.println("Nouvelles coordonnees pour le pion: ");
-					coords = in.nextLine();
-					if(coords.equalsIgnoreCase("menu")){
-						endRequired = true;
-					} else{
-						newCoords = ((HumanP) this.current).readCoords(coords);
-					}
-				}
-
-				if(pawnCoords != null && newCoords != null){
-					move = ((HumanP) this.current).newMove(pawnCoords[0], pawnCoords[1], newCoords[0], newCoords[1]);
+				int[] coords = this.control.askMove();
+				if(coords != null){
+					move = ((HumanP) this.current).newMove(coords[0], coords[1], coords[2], coords[3]);
+				} else{
+					endRequired = true;
 				}
 			} else{
 				move = ((BotP) this.current).newMove();
@@ -259,7 +242,6 @@ public class Game implements java.io.Serializable {
 				}
 			} else if(!endRequired){
 				System.out.println("Erreur Game.nextMove(): le mouvement demande n'est pas valide");
-				System.out.println("Game.nextMove()");
 			}
 		} while(!endRequired && !mvtValid);
 		return endRequired;
@@ -300,100 +282,6 @@ public class Game implements java.io.Serializable {
 	}
 
 	/**
-	 * Prints the game interface
-	 */
-	public void showGrid() {
-		if(this.grid.length != 0){
-			ArrayList<Pawn> list = new ArrayList<Pawn>();
-			list.addAll(this.whitePawn);
-			list.addAll(this.blackPawn);
-			list.add(this.zenPawn);
-			boolean found;
-			Pawn p;
-			int k;
-
-			System.out.println("------------------------------------------------");
-			for(int i=this.grid[0].length; i > 0; i--){
-				if(i < 10){
-					System.out.print(i+"  ");
-				} else{
-					System.out.print(i+" ");
-				}
-
-				for(int j=0; j < this.grid.length; j++){
-					if(!this.grid[j][i-1].isFree()){
-						found = false;
-						k = 0;
-						// If the program is executed on Windows
-						if(System.getProperty("os.name").toLowerCase().contains("win")){
-							while(k < list.size() && !found){ // Print B and W for black and white pawns
-								p = list.get(k);
-								if(p.isAt(j, i-1)){
-									found = true;
-									list.remove(p);
-									if(p.getType() == PawnType.BLACK){
-										System.out.print("N ");
-									} else if(p.getType() == PawnType.WHITE){
-										System.out.print("B ");
-									} else{
-										System.out.print("Z ");
-									}
-								}
-								k++;
-							}
-						} else{
-							while(k < list.size() && !found){ // Print dots for black and white pawns
-								p = list.get(k);
-								if(p.isAt(j, i-1)){
-									found = true;
-									list.remove(p);
-									if(p.getType() == PawnType.BLACK){
-										System.out.print("\u25E6 ");
-									} else if(p.getType() == PawnType.WHITE){
-										System.out.print("\u2022 ");
-									} else{
-										System.out.print("Z ");
-									}
-								}
-								k++;
-							}
-						}
-					} else{
-						System.out.print("x ");
-					}
-				}
-				// Indicators
-				if(System.getProperty("os.name").toLowerCase().contains("win")){
-					if(i == this.grid[0].length-1){
-						System.out.print("\tN Pions noirs");
-					} else if(i == this.grid[0].length-2){
-						System.out.print("\tB Pions blancs");
-					} else if(i == this.grid[0].length-3){
-						System.out.print("\tZ Pion Zen");
-					} else if(i == this.grid[0].length-5){
-						System.out.print("\tJoueur "+this.current.name);
-					}
-				} else{
-					if(i == this.grid[0].length-1){
-						System.out.print("\t\u25E6 Pions noirs");
-					} else if(i == this.grid[0].length-2){
-						System.out.print("\t\u2022 Pions blancs");
-					} else if(i == this.grid[0].length-3){
-						System.out.print("\tZ Pion Zen");
-					} else if(i == this.grid[0].length-5){
-						System.out.print("\tJoueur "+this.current.name);
-					}
-				}
-				System.out.print("\n");
-			}
-			System.out.println("   A B C D E F G H I J K");
-			System.out.println();
-		} else{
-			System.out.println("Erreur Game.showGrid(): la grille n'a pas ete initialisee");
-		}
-	}
-
-	/**
 	 * Returns the instance of the current player
 	 * @return the current player
 	 */
@@ -410,5 +298,33 @@ public class Game implements java.io.Serializable {
 		} else {
 			this.current = this.player1;
 		}
+	}
+
+	/**
+	 * Returns the list of pawns in the game
+	 * @return list of pawns
+	 */
+	public ArrayList<Pawn> getListPawn() {
+		ArrayList<Pawn> ret = new ArrayList<Pawn>();
+		ret.addAll(this.whitePawn);
+		ret.addAll(this.blackPawn);
+		ret.add(this.zenPawn);
+		return ret;
+	}
+
+	/**
+	 * Returns the grid of the game
+	 * @return game grid
+	 */
+	public Square[][] getGrid() {
+		return this.grid;
+	}
+
+	/**
+	 * Returns the interface mode used
+	 * @return interface mode used
+	 */
+	public UIMode getUI() {
+		return this.ui;
 	}
 }
