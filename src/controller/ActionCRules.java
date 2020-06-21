@@ -18,6 +18,10 @@ public class ActionCRules implements ActionListener, Serializable {
     /** Menu controller instance */
     private ActionCMenu controlMenu;
     
+    /**
+     * Triggered when a button is pressed
+     * @param e event generated
+     */
     public void actionPerformed(ActionEvent e){
         this.controlMenu.printMenuUI();
     }
@@ -26,7 +30,7 @@ public class ActionCRules implements ActionListener, Serializable {
         if(this.modelMenu.getUI() == UIMode.TEXT){
             this.viewRules.showShell();
         } else{
-
+            this.viewRules.showGUI();
         }
     }
 

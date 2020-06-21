@@ -33,7 +33,7 @@ public class ZenInitie implements Serializable {
 	public ZenInitie(ActionCGame gameC) {
 		if(gameC != null){
 			this.gameController = gameC;
-			this.ui = UIMode.TEXT;
+			this.ui = UIMode.GRAPH;
 		} else{
 			System.out.println("Erreur ZenInitie(): parametre non valide");
 		}

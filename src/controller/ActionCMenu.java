@@ -21,20 +21,36 @@ public class ActionCMenu implements ActionListener, Serializable {
     /** Rules controller instance */
     private ActionCRules controlRules;
 
+    /**
+     * Triggered when a button is pressed
+     * @param e event generated
+     */
     public void actionPerformed(ActionEvent e){
-
+        if(e.getSource() == this.viewMenu.getBNewGame()){
+            this.controlGameSettings.printGameSettingsUI();
+        } else if(e.getSource() == this.viewMenu.getBLoadGame()){
+            this.modelMenu.loadGame(model.ZenInitie.SAVE_PATH+"saveFile.zenSave");
+            this.modelMenu.getCurrentGame().start();
+        } else if(e.getSource() == this.viewMenu.getBRules()){
+            this.controlRules.printRulesUI();
+        } else if(e.getSource() == this.viewMenu.getBTextVersion()){
+            this.modelMenu.setUI(UIMode.TEXT);
+            for(int i=0; i < 70; i++){
+                System.out.println();
+            }
+            this.printMenuUI();
+        } else{
+            this.viewMenu.closeGUI();
+        }
     }
 
     @SuppressWarnings("resource") // I remove the resource leak warning because it's intentional to leave the System.in scanner open
     public void printMenuUI(){
+        if(this.modelMenu.getUI() == UIMode.GRAPH){
+            this.viewMenu.showGUI();
+        }
+        
         boolean end = false;
-			System.out.println(" _____                 ___  _       _ __  _    			");
-			System.out.println("/__  /  ___  ____     / ( )(_)___  (_) /_(_)__ 			");
-			System.out.println("  / /  / _ \\/ __ \\   / /|// / __ \\/ / __/ / _ \\			");
-			System.out.println(" / /__/  __/ / / /  / /  / / / / / / /_/ /  __/			");
-			System.out.println("/____/\\___/_/ /_/  /_/  /_/_/ /_/_/\\__/_/\\___/ 			");
-            System.out.println();
-            
         while(this.modelMenu.getUI() == UIMode.TEXT && !end){
             this.viewMenu.showShell();
 
@@ -49,7 +65,7 @@ public class ActionCMenu implements ActionListener, Serializable {
                 this.controlRules.printRulesUI();
             } else if(rep.equals("4")){
                 this.modelMenu.setUI(UIMode.GRAPH);
-                // TODO - call controller method to start GUI
+                this.viewMenu.showGUI();
             } else if(rep.equals("5")){
                 end = true;
             }
