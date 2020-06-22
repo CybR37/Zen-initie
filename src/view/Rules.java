@@ -1,7 +1,5 @@
 package view;
 
-import java.io.Serializable;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,10 +15,8 @@ import controller.ActionCRules;
  * Shows the rules
  * @author Théo Koenigs
  */
-public class Rules implements Serializable {
+public class Rules {
 
-    /** The version for serialization and deserialization */
-	private static final long serialVersionUID = 1;
 	/** Rules controller instance */
 	private ActionCRules controlRules;
 	/** GUI instance */

@@ -246,5 +246,13 @@ public abstract class Player implements java.io.Serializable {
 	 */
 	public String getName() {
 		return this.name;
-	}	
+	}
+
+	/**
+	 * Returns the player's pawnlist
+	 * @return player's pawnlist
+	 */
+	public ArrayList<Pawn> getMyPawns() {
+		return this.myPawns;
+	}
 }

@@ -18,7 +18,7 @@ public class Game implements java.io.Serializable {
 	/** The version for serialization and deserialization */
 	private static final long serialVersionUID = 1;
 	/** Controller instance */
-	private ActionCGame control;
+	private transient ActionCGame control;
 	/** List of white pawns */
 	private ArrayList<Pawn> whitePawn;
 	/** List of black pawns */
@@ -54,8 +54,7 @@ public class Game implements java.io.Serializable {
 	 */
 	public Game(ActionCGame controller, UIMode ui, PlayerMode mode, int width, int height) {
 		if(controller != null && ui != null && mode != null && width == 11 && height == 11){
-			this.control = controller;
-			this.control.setModelClasses(this);
+			this.setLinkController(controller);
 			this.ui = ui;
 			this.mode = mode;
 			this.width = width;
@@ -89,12 +88,32 @@ public class Game implements java.io.Serializable {
 	}
 
 	/**
+	 * Creates a new link between the controller attribute and the game
+	 * @param acGame new controller instance
+	 */
+	public void setLinkController(ActionCGame acGame){
+		if(acGame != null){
+			this.control = acGame;
+			this.control.setModelClasses(this);
+		} else{
+			System.out.println("Erreur Game.setController(): parametre non valide");
+		}
+	}
+
+	/**
 	 * Starts the game, calls {@link #isWin()}, if true ends the game
 	 */
 	public void start() {
 		boolean end = false;
 		this.control.printStartUI();
-		while(!end){
+		if(this.ui == UIMode.GRAPH){
+			if(this.current instanceof BotP){
+				this.nextMove();
+				this.changeCurrent();
+			}
+			this.control.printGridUI();
+		}
+		while(this.ui == UIMode.TEXT && !end){
 			if(this.current instanceof HumanP){
 				this.control.printGridUI();
 			}
@@ -310,6 +329,46 @@ public class Game implements java.io.Serializable {
 		ret.addAll(this.blackPawn);
 		ret.add(this.zenPawn);
 		return ret;
+	}
+
+	/**
+	 * Returns the list of white pawns in the game
+	 * @return list of pawns
+	 */
+	public ArrayList<Pawn> getWhitePawn() {
+		return this.whitePawn;
+	}
+
+	/**
+	 * Returns the list of black pawns in the game
+	 * @return list of pawns
+	 */
+	public ArrayList<Pawn> getBlackPawn() {
+		return this.blackPawn;
+	}
+
+	/**
+	 * Returns the zen pawn of the game
+	 * @return zen pawn
+	 */
+	public Pawn getZenPawn() {
+		return this.zenPawn;
+	}
+
+	/**
+	 * Returns the movement of the previous player
+	 * @return previous movement
+	 */
+	public Movement getOldMov() {
+		return this.oldMov;
+	}
+
+	public void setOldMove(Movement mov){
+		if(mov != null){
+			this.oldMov = mov;
+		} else{
+			System.out.println("Erreur Game.setOldMove(): parametre non valide");
+		}
 	}
 
 	/**

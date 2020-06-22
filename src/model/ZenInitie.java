@@ -6,16 +6,12 @@ import java.io.ObjectInputStream;
 
 import controller.ActionCGame;
 
-import java.io.Serializable;
-
 /**
  * The game manager
  * @author Théo Koenigs
  */
-public class ZenInitie implements Serializable {
+public class ZenInitie {
 
-    /** The version for serialization and deserialization */
-    private static final long serialVersionUID = 1;
 	/** Path of saved games */
 	public static final String SAVE_PATH = "./saves/";
 	/** Game instance */
@@ -47,6 +43,7 @@ public class ZenInitie implements Serializable {
 		try{
 			ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(fileName)));
 			this.currentGame = (Game) input.readObject();
+			this.currentGame.setLinkController(this.gameController);
 			this.currentGame.setUI(this.ui);
 			input.close();
 		} catch(java.io.FileNotFoundException e){

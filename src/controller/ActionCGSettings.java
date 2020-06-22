@@ -4,15 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.util.Scanner;
-import java.io.Serializable;
 
 import model.UIMode;
 import model.PlayerMode;
 
-public class ActionCGSettings implements ActionListener, Serializable {
-
-    /** The version for serialization and deserialization */
-    private static final long serialVersionUID = 1;    
+public class ActionCGSettings implements ActionListener {
+   
     /** Menu model instance */
     private model.ZenInitie modelMenu;
     /** Rules view instance */
@@ -25,7 +22,11 @@ public class ActionCGSettings implements ActionListener, Serializable {
      * @param e event generated
      */
     public void actionPerformed(ActionEvent e){
-
+        if(e.getSource() == this.viewGS.getBStart()){
+            this.modelMenu.newGame((PlayerMode) this.viewGS.getCMode().getSelectedItem(), 11, 11);
+        } else{
+            this.controlMenu.printMenuUI();
+        }
     }
 
     @SuppressWarnings("resource") // I remove the resource leak warning because it's intentional to leave the System.in scanner open

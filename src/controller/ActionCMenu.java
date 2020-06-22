@@ -4,14 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.util.Scanner;
-import java.io.Serializable;
 
 import model.UIMode;
 
-public class ActionCMenu implements ActionListener, Serializable {
-
-    /** The version for serialization and deserialization */
-    private static final long serialVersionUID = 1;    
+public class ActionCMenu implements ActionListener{
+ 
     /** Menu model instance */
     private model.ZenInitie modelMenu;
     /** Menu view instance  */

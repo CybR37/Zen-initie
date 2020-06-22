@@ -1,7 +1,5 @@
 package view;
 
-import java.io.Serializable;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Color;
@@ -15,10 +13,10 @@ import javax.swing.JPanel;
 
 import controller.ActionCMenu;
 
-public class Menu implements Serializable {
+public class Menu {
 
-    /** The version for serialization and deserialization */
-	private static final long serialVersionUID = 1;
+	/** Path to resources images files */
+	static final String RES_IMG_PATH = "./res/img/";
 	/** Menu controller instance */
 	private ActionCMenu controlMenu;
 	/** GUI instance */
@@ -51,7 +49,7 @@ public class Menu implements Serializable {
 			this.bRules = new JButton("Regles du jeu");
 			this.bTextVersion = new JButton("Version texte");
 			this.bQuit = new JButton("Quitter");
-			this.lLogo = new JLabel(new ImageIcon("./res/img/logo.jpg"));
+			this.lLogo = new JLabel(new ImageIcon(RES_IMG_PATH+"logo.jpg"));
 			this.bNewGame.setBackground(new Color(215, 215, 215));
 			this.bLoadGame.setBackground(new Color(215, 215, 215));
 			this.bRules.setBackground(new Color(215, 215, 215));

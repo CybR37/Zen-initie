@@ -3,14 +3,10 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.io.Serializable;
-
 import model.UIMode;
 
-public class ActionCRules implements ActionListener, Serializable {
+public class ActionCRules implements ActionListener {
 
-    /** The version for serialization and deserialization */
-    private static final long serialVersionUID = 1;
     /** Menu model instance */
     private model.ZenInitie modelMenu;
     /** Rules view instance */

@@ -24,7 +24,7 @@ public class Launch {
 				ActionCRules acRules = new ActionCRules();
 
 				JFrame frame = new JFrame("Zen l'initie");
-				frame.setSize(820, 440);
+				frame.setSize(820, 433);
 				frame.setLocation(200, 100);
 				Menu vMenu = new Menu(acMenu, frame);
 				Game vGame = new Game(acGame, frame);
