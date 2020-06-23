@@ -109,6 +109,8 @@ public class ActionCGame implements ActionListener {
 
                             this.modelGame.setOldMove(move);
                             this.viewGame.getLErrors().setText("");
+                            this.viewGame.getTSelectPawn().setText("");
+                            this.viewGame.getTSelectCoords().setText("");
 
                             this.modelGame.changeCurrent();
                             this.viewGame.getLCurrentPlayer().setText("Joueur "+this.modelGame.getCurrent().getName()+"  ");
