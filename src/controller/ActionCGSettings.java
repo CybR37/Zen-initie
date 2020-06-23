@@ -8,6 +8,10 @@ import java.util.Scanner;
 import model.UIMode;
 import model.PlayerMode;
 
+/**
+ * Game settings controller, links view class and model class
+ * @author Théo Koenigs
+ */
 public class ActionCGSettings implements ActionListener {
    
     /** Menu model instance */
@@ -29,6 +33,9 @@ public class ActionCGSettings implements ActionListener {
         }
     }
 
+    /**
+     * Prints the game settings interface
+     */
     @SuppressWarnings("resource") // I remove the resource leak warning because it's intentional to leave the System.in scanner open
     public void printGameSettingsUI(){
         if(this.modelMenu.getUI() == UIMode.TEXT){
@@ -53,6 +60,12 @@ public class ActionCGSettings implements ActionListener {
         }
     }
 
+    /**
+     * Sets the MVC class attibutes
+     * @param mMenu menu model class
+     * @param vGSettings game settings view class
+     * @param cMenu menu controller class
+     */
     public void setMVCClasses(model.ZenInitie mMenu, view.GSettings vGSettings, ActionCMenu cMenu){
         if(mMenu != null && vGSettings != null && cMenu != null){
             this.modelMenu = mMenu;

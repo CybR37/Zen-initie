@@ -5,6 +5,10 @@ import java.awt.event.ActionListener;
 
 import model.UIMode;
 
+/**
+ * Rules controller, links view class and model class
+ * @author Théo Koenigs
+ */
 public class ActionCRules implements ActionListener {
 
     /** Menu model instance */
@@ -22,6 +26,9 @@ public class ActionCRules implements ActionListener {
         this.controlMenu.printMenuUI();
     }
 
+    /**
+     * Prints rules interface
+     */
     public void printRulesUI(){
         if(this.modelMenu.getUI() == UIMode.TEXT){
             this.viewRules.showShell();
@@ -30,6 +37,12 @@ public class ActionCRules implements ActionListener {
         }
     }
 
+    /**
+     * Sets the MVC class attibutes
+     * @param mMenu menu model class
+     * @param vRules rules view class
+     * @param cMenu menu controller class
+     */
     public void setMVClasses(model.ZenInitie mMenu, view.Rules vRules, ActionCMenu cMenu){
         if(mMenu != null && vRules != null && cMenu != null){
             this.modelMenu = mMenu;

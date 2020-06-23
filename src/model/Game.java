@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.File;
 
 /**
- * Game class, the core of a game
+ * Game model class, the core of a game
  * @author Théo Koenigs
  */
 public class Game implements java.io.Serializable {
@@ -363,6 +363,10 @@ public class Game implements java.io.Serializable {
 		return this.oldMov;
 	}
 
+	/**
+	 * Changes the oldMove attribute with the new one
+	 * @param mov new oldMove
+	 */
 	public void setOldMove(Movement mov){
 		if(mov != null){
 			this.oldMov = mov;

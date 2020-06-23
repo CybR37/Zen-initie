@@ -13,6 +13,10 @@ import javax.swing.JPanel;
 
 import controller.ActionCMenu;
 
+/**
+ * Menu view class, shows interface in graphical or text mode
+ * @author Théo Koenigs
+ */
 public class Menu {
 
 	/** Path to resources images files */

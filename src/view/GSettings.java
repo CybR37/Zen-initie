@@ -15,6 +15,10 @@ import model.PlayerMode;
 
 import controller.ActionCGSettings;
 
+/**
+ * Game settings view class, shows interface in graphical or text mode
+ * @author Théo Koenigs
+ */
 public class GSettings {
 
 	/** Game settings controller instance */

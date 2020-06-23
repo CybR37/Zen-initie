@@ -12,7 +12,7 @@ import java.awt.BorderLayout;
 import controller.ActionCRules;
 
 /**
- * Shows the rules
+ * Rules view class, shows interface in graphical or text mode
  * @author Théo Koenigs
  */
 public class Rules {

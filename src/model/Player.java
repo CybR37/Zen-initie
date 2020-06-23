@@ -126,102 +126,6 @@ public abstract class Player implements java.io.Serializable {
 		ArrayList<Pawn> ret = null;
 		if(x >= 0 && x < this.width && y >= 0 && y < this.height && pawnList != null){
 			ret = new ArrayList<Pawn>();
-			/*boolean found = false;
-			int i = 0;
-			// Bottom left corner
-			if(x > 0 && y > 0){
-				while(i < pawnList.size() && !found){
-					if(pawnList.get(i).isAt(x-1, y-1)){
-						found = true;
-						ret.add(pawnList.get(i));
-					}
-					i++;
-				}
-			}
-			// Bottom side
-			if(y > 0){
-				found = false;
-				i = 0;
-				while(i < pawnList.size() && !found){
-					if(pawnList.get(i).isAt(x, y-1)){
-						found = true;
-						ret.add(pawnList.get(i));
-					}
-					i++;
-				}
-			}
-			// Bottom right corner
-			if(x < this.width-1 && y > 0){
-				found = false;
-				i = 0;
-				while(i < pawnList.size() && !found){
-					if(pawnList.get(i).isAt(x+1, y-1)){
-						found = true;
-						ret.add(pawnList.get(i));
-					}
-					i++;
-				}
-			}
-			// Left side
-			if(x > 0){
-				found = false;
-				i = 0;
-				while(i < pawnList.size() && !found){
-					if(pawnList.get(i).isAt(x-1, y)){
-						found = true;
-						ret.add(pawnList.get(i));
-					}
-					i++;
-				}
-			}
-			// Right side
-			if(x < this.width-1){
-				found = false;
-				i = 0;
-				while(i < pawnList.size() && !found){
-					if(pawnList.get(i).isAt(x+1, y)){
-						found = true;
-						ret.add(pawnList.get(i));
-					}
-					i++;
-				}
-			}
-			// Top left corner
-			if(x > 0 && y < this.height-1){
-				found = false;
-				i = 0;
-				while(i < pawnList.size() && !found){
-					if(pawnList.get(i).isAt(x-1, y+1)){
-						found = true;
-						ret.add(pawnList.get(i));
-					}
-					i++;
-				}
-			}
-			// Top side
-			if(y < this.height-1){
-				found = false;
-				i = 0;
-				while(i < pawnList.size() && !found){
-					if(pawnList.get(i).isAt(x, y+1)){
-						found = true;
-						ret.add(pawnList.get(i));
-					}
-					i++;
-				}
-			}
-			// Top right corner
-			if(x < this.width-1 && y < this.height-1){
-				found = false;
-				i = 0;
-				while(i < pawnList.size() && !found){
-					if(pawnList.get(i).isAt(x+1, y+1)){
-						found = true;
-						ret.add(pawnList.get(i));
-					}
-					i++;
-				}
-			}*/
 			for (Pawn p : pawnList) {
 				if(p.isAt(x-1, y-1) // Bottom left corner
 				|| p.isAt(x, y-1) // Bottom side
@@ -246,13 +150,5 @@ public abstract class Player implements java.io.Serializable {
 	 */
 	public String getName() {
 		return this.name;
-	}
-
-	/**
-	 * Returns the player's pawnlist
-	 * @return player's pawnlist
-	 */
-	public ArrayList<Pawn> getMyPawns() {
-		return this.myPawns;
 	}
 }

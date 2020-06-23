@@ -14,6 +14,10 @@ import model.HumanP;
 import model.Movement;
 import model.UIMode;
 
+/**
+ * Game controller, links view class and model class
+ * @author Théo Koenigs
+ */
 public class ActionCGame implements ActionListener {
     
     /** Game model instance */
@@ -41,14 +45,16 @@ public class ActionCGame implements ActionListener {
                         this.selectedPawn = p;
                         this.viewGame.getTGrid().setRowSelectionInterval(convertedCoords[1], convertedCoords[1]);
                         this.viewGame.getTGrid().setColumnSelectionInterval(convertedCoords[0], convertedCoords[0]);
-                        
                     }
                     i++;
                 }
                 if(this.selectedPawn == null){
-                    System.out.println("Erreur ActionCGame.actionPerformed(): Aucun pion ne se trouve a ces coordonnees");
+                    this.viewGame.getLErrors().setText("[-] Aucun pion ne se trouve ici");
+                } else{
+                    this.viewGame.getLErrors().setText("");
                 }
             }
+            this.viewGame.refreshGUI(this.modelGame.getGrid());
         } else if(e.getSource() == this.viewGame.getBValidMove()){
             if(this.modelGame.getCurrent() instanceof HumanP){
                 Movement move;
@@ -79,10 +85,7 @@ public class ActionCGame implements ActionListener {
                             if(!this.modelGame.getGrid()[move.getNX()][move.getNY()].isFree()){
                                 boolean found = false;
                                 Pawn p;
-                                ArrayList<Pawn> pawnList = new ArrayList<Pawn>();
-                                pawnList.addAll(this.modelGame.getWhitePawn());
-                                pawnList.addAll(this.modelGame.getBlackPawn());
-                                pawnList.add(this.modelGame.getZenPawn());
+                                ArrayList<Pawn> pawnList = this.modelGame.getListPawn();
                                 Iterator<Pawn> it = pawnList.iterator();
                                 while(it.hasNext() && !found){
                                     p = it.next();
@@ -105,31 +108,38 @@ public class ActionCGame implements ActionListener {
                             this.modelGame.getGrid()[move.getNX()][move.getNY()].setFree(false);
 
                             this.modelGame.setOldMove(move);
-                        } else{
-                            System.out.println("Erreur ActionCGame.actionPerformed(): le mouvement demande n'est pas valide");
-                        }
+                            this.viewGame.getLErrors().setText("");
 
-                        this.modelGame.changeCurrent();
-                        if(this.modelGame.isWin()){
                             this.modelGame.changeCurrent();
+                            this.viewGame.getLCurrentPlayer().setText("Joueur "+this.modelGame.getCurrent().getName()+"  ");
                             if(this.modelGame.isWin()){
-                                this.printWinUI(true);
-                            } else{
-                                this.printWinUI(false);
+                                this.modelGame.changeCurrent();
+                                if(this.modelGame.isWin()){
+                                    this.printWinUI(true);
+                                } else{
+                                    this.printWinUI(false);
+                                }
+                                this.controlMenu.printMenuUI();
                             }
+                        } else{
+                            this.viewGame.getLErrors().setText("[-] Le mouvement n'est pas valide");
                         }
                     } else{
-                        System.out.println("Erreur ActionCGame.actionPerformed(): le mouvement demande n'est pas valide");
+                        this.viewGame.getLErrors().setText("[-] Le mouvement n'est pas valide");
                     }
                 } while(this.modelGame.getCurrent() instanceof BotP && move != null);
-                this.printGridUI();
+                this.viewGame.refreshGUI(this.modelGame.getGrid());
             }
         } else{
+            this.printEndUI();
             this.modelGame.saveState("saveFile.zenSave");
             this.controlMenu.printMenuUI();
         }
     }
 
+    /**
+     * Prints the start sentence of the game
+     */
     public void printStartUI(){
         if(this.modelGame.getUI() == UIMode.TEXT){
             this.viewGame.showStartShell(this.modelGame.getCurrent().getName());
@@ -138,6 +148,9 @@ public class ActionCGame implements ActionListener {
         }
     }
 
+    /**
+     * Prints the grid interface
+     */
     public void printGridUI(){
         if(this.modelGame.getUI() == UIMode.TEXT){
             this.viewGame.showGridShell(this.modelGame.getGrid(), this.modelGame.getListPawn(), this.modelGame.getCurrent().getName());
@@ -146,6 +159,9 @@ public class ActionCGame implements ActionListener {
         }
     }
 
+    /**
+     * Prints the end sentence of the game
+     */
     public void printEndUI(){
         if(this.modelGame.getUI() == UIMode.TEXT){
             this.viewGame.showStopShell();
@@ -154,6 +170,10 @@ public class ActionCGame implements ActionListener {
         }
     }
 
+    /**
+     * Prints the win sentence if isDraw is false, prints draw sentence if isDraw is true
+     * @param isDraw true if is a draw, false otherwise
+     */
     public void printWinUI(boolean isDraw){
         if(this.modelGame.getUI() == UIMode.TEXT){
             this.viewGame.showWinShell(isDraw, this.modelGame.getCurrent().getName());
@@ -203,6 +223,11 @@ public class ActionCGame implements ActionListener {
         return ret;
     }
 
+    /**
+     * Sets the view and controllers attibutes
+     * @param vGame game view class
+     * @param cMenu menu controller class
+     */
     public void setVCClasses(view.Game vGame, ActionCMenu cMenu){
         if(vGame != null && cMenu != null){
             this.viewGame = vGame;
@@ -212,6 +237,10 @@ public class ActionCGame implements ActionListener {
         }
     }
 
+    /**
+     * Sets the model attribute
+     * @param mGame game model class
+     */
     public void setModelClasses(model.Game mGame){
         if(mGame != null){
             this.modelGame = mGame;

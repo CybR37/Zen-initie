@@ -24,6 +24,10 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+/**
+ * Game view class, shows interface in graphical or text mode
+ * @author Théo Koenigs
+ */
 public class Game{
 
 	/** Game controller instance */
@@ -48,6 +52,8 @@ public class Game{
 	private JLabel lSelectMove;
 	/** Current player label */
 	private JLabel lCurrentPlayer;
+	/** Errors label */
+	private JLabel lErrors;
 
 	/**
 	 * Class constructor, initializes the attributes with the parameters
@@ -61,6 +67,7 @@ public class Game{
 
 			this.lSelectPawn = new JLabel("Selectionnez un pion");
 			this.lSelectMove = new JLabel("Vers quelles coordonnees");
+			this.lErrors = new JLabel();
 			this.tSelectPawn = new JTextField();
 			this.tSelectCoords = new JTextField();
 			this.bValidPawn = new JButton("Valider la selection");
@@ -183,13 +190,24 @@ public class Game{
 			coordsMovePane.add(this.tSelectCoords);
 			coordsMovePane.setBackground(new Color(247, 247, 247));
 			midRightPane.add(coordsMovePane);
+			midRightPane.add(this.lErrors);
 			midRightPane.setBackground(new Color(247, 247, 247));
 			JPanel rightPane = new JPanel(new BorderLayout(50, 0));
 			rightPane.add(extremeRightPane, BorderLayout.EAST);
 			rightPane.add(midRightPane, BorderLayout.CENTER);
 			rightPane.setBackground(new Color(247, 247, 247));
 
-			framePane.add(spGrid);
+			JPanel leftPane = new JPanel(new BorderLayout(10, 0));
+			JPanel coordsPane = new JPanel(new GridLayout(grid[0].length, 1));
+			for(int i=1; i <= grid[0].length; i++){
+				coordsPane.add(new JLabel(String.valueOf(i)));
+			}
+			coordsPane.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+			coordsPane.setBackground(new Color(247, 247, 247));
+			leftPane.add(coordsPane, BorderLayout.EAST);
+			leftPane.add(spGrid, BorderLayout.CENTER);
+			leftPane.setBackground(new Color(247, 247, 247));
+			framePane.add(leftPane);
 			framePane.add(rightPane);
 			framePane.setBackground(new Color(247, 247, 247));
 
@@ -224,6 +242,16 @@ public class Game{
 			System.out.println("Erreur Game.showWinGUI(): parametre non valide");
 		}
 	}
+
+	/**
+	 * Re-sets the JTable row height and refresh frame using revalidate and repaint
+	 * @param grid used to get number of rows
+	 */
+	public void refreshGUI(Square[][] grid){
+		this.tGrid.setRowHeight(((int) this.frame.getSize().getHeight()-70)/grid.length);
+		this.frame.revalidate();
+		this.frame.repaint();
+    }
 
     /**
      * Prints the text sentence at the beginning of the game
@@ -305,11 +333,11 @@ public class Game{
 					// Indicators
 					if(System.getProperty("os.name").toLowerCase().contains("win")){
 						if(i == grid[0].length-1){
-							System.out.print("\tN Pions noirs");
+							System.out.print("\tN - Pions noirs");
 						} else if(i == grid[0].length-2){
-							System.out.print("\tB Pions blancs");
+							System.out.print("\tB - Pions blancs");
 						} else if(i == grid[0].length-3){
-							System.out.print("\tZ Pion Zen");
+							System.out.print("\tZ - Pion Zen");
 						} else if(i == grid[0].length-5){
 							System.out.print("\tJoueur "+currentPlayerName);
 						}
@@ -411,26 +439,18 @@ public class Game{
 	}
 
 	/**
-	 * Returns the selection pawn label instance
-	 * @return selection pawn label instance
-	 */
-	public JLabel getLSelectPawn() {
-		return this.lSelectPawn;
-	}
-
-	/**
-	 * Returns the selection move label instance
-	 * @return selection move label instance
-	 */
-	public JLabel getLSelectMove() {
-		return this.lSelectMove;
-	}
-
-	/**
-	 * Returns the current player label instance
-	 * @return current player label instance
+	 * Returns the error label instance
+	 * @return error label instance
 	 */
 	public JLabel getLCurrentPlayer() {
 		return this.lCurrentPlayer;
+	}
+
+	/**
+	 * Returns the error label instance
+	 * @return error label instance
+	 */
+	public JLabel getLErrors() {
+		return this.lErrors;
 	}
 }

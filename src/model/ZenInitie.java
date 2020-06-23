@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import controller.ActionCGame;
 
 /**
- * The game manager
+ * Menu model class, the game manager
  * @author Théo Koenigs
  */
 public class ZenInitie {
@@ -23,7 +23,6 @@ public class ZenInitie {
 
 	/**
 	 * Class constructor, initializes attribute ui with default values
-	 * @param menuC menu controller instance
 	 * @param gameC game controller instance
 	 */
 	public ZenInitie(ActionCGame gameC) {
