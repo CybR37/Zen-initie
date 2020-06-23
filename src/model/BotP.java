@@ -67,7 +67,7 @@ public class BotP extends Player {
 
 			choosenArea = (int) (Math.random()*4);
 			choosenDir = (int) (Math.random()*2);
-			if(choosenArea == 0){ // Top left area
+			if(choosenArea == 0 && topLeftPawns.size() > 0){ // Top left area
 				choosenPawn = topLeftPawns.get((int) (Math.random()*topLeftPawns.size()));
 				if(mostPawnArea == 0){ // Random mouvement
 					choosenDir = (int) (Math.random()*8);
@@ -103,7 +103,7 @@ public class BotP extends Player {
 				} else{ // Diagonal direction
 					ret = findValidMove(choosenPawn, Direction.SE);
 				}
-			} else if(choosenArea == 1){ // Top right area
+			} else if(choosenArea == 1 && topRightPawns.size() > 0){ // Top right area
 				choosenPawn = topRightPawns.get((int) (Math.random()*topRightPawns.size()));
 				if(mostPawnArea == 0){ // Left & diagonal direction
 					if(choosenDir == 0){
@@ -139,7 +139,7 @@ public class BotP extends Player {
 						ret = findValidMove(choosenPawn, Direction.SW);
 					}
 				}
-			} else if(choosenArea == 2){ // Bottom left area
+			} else if(choosenArea == 2 && botLeftPawns.size() > 0){ // Bottom left area
 				choosenPawn = botLeftPawns.get((int) (Math.random()*botLeftPawns.size()));
 				if(mostPawnArea == 0){ // Top & diagonal direction
 					if(choosenDir == 0){
@@ -175,7 +175,7 @@ public class BotP extends Player {
 						ret = findValidMove(choosenPawn, Direction.NE);
 					}
 				}
-			} else{ // Bottom right area
+			} else if(botRightPawns.size() > 0){ // Bottom right area
 				choosenPawn = botRightPawns.get((int) (Math.random()*botRightPawns.size()));
 				if(mostPawnArea == 0){ // Diagonal direction
 					ret = findValidMove(choosenPawn, Direction.NW);

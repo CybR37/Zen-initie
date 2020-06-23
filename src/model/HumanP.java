@@ -99,7 +99,6 @@ public class HumanP extends Player {
 				if(Character.isLetter(firstCh) && Character.isDigit(secondCh) && Character.isDigit(thirdCh)){
 					char firstCoord = Character.toUpperCase(firstCh);
 					int secondCoord = Integer.parseInt(String.valueOf(secondCh)+String.valueOf(thirdCh)) - 1;
-					System.out.println(secondCoord);
 					if(firstCoord >= 'A' && firstCoord <= 'K' && secondCoord >= 0 && secondCoord < this.height){
 						ret = new int[2];
 						ret[0] = firstCoord - 'A'; //Convert letter to integer
