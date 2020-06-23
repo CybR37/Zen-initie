@@ -134,6 +134,7 @@ public class Movement implements java.io.Serializable {
 					int g;
 					int h;
 					int j;
+					int l;
 					boolean found;
 					// Count the number of pawns according to the direction of the movement
 					// Plus, detect if an enemy pawn is blocking movement
