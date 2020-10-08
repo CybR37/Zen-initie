@@ -11,3 +11,6 @@
  - Ouvrez un terminal à cet endroit et exécutez la commande 'java -jar Zen.jar'  
  #### ou
  - Ouvrez directement le fichier Zen.jar
+ 
+ 
+ #### Projet de programmation de fin d'année 2019 - IUT Vannes
